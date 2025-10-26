@@ -63,8 +63,8 @@ public class Usuario {
     private String correo;
 
     // contraseña
-    @NotBlank(message = "Nombre no puede estar vacío")
-    @Size(min = 1, max = 75, message = "Nombre debe tener entre 1 y 75 caracteres")
+    @NotBlank(message = "Password no puede estar vacío")
+    @Size(min = 1, max = 75, message = "Password debe tener entre 1 y 75 caracteres")
     @Column(name = "PASSWORD", length = 250)
     private String password;
     
