@@ -18,21 +18,21 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(
-                                "/", "/home", "/index", "/account", "/error",
-                                "/css/**", "/js/**", "/images/**", "/plugins/**", "/webjars/**")
-                        .permitAll()
-                       //.requestMatchers("/cliente/**").authenticated()
-                        .anyRequest()
-                        .authenticated())
-                .formLogin((form) -> form
-                        .loginPage("/account") // GET del login formualario
-                        .loginProcessingUrl("/login") // POST del login formulario
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/account?error")
-                        .permitAll())
-                .logout((logout) -> logout.permitAll());
+            .authorizeHttpRequests((requests) -> requests
+                .requestMatchers( 
+                    "/", "/home", "/index", "/account", "/error", "/mis_empresas", "/mis_maquinarias", "/perfil",
+                    "/css/**", "/js/**", "/images/**", "/plugins/**", "/webjars/**").permitAll()
+                .anyRequest()
+                .authenticated()
+            )
+            .formLogin((form) -> form
+                .loginPage("/account") // GET del login formualario
+                .loginProcessingUrl("/login") //POST del login formulario
+                .defaultSuccessUrl("/",true)
+                .failureUrl("/account?error")
+                .permitAll()
+            )
+            .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
