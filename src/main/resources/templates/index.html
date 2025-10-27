@@ -171,9 +171,9 @@
 
 
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" th:href="@{/cliente/perfil}">Perfil</a>
-                                        <a class="dropdown-item" th:href="@{/cliente/mis_empresas}">Mis Empresas</a>
-                                        <a class="dropdown-item" th:href="@{/cliente/mis_maquinarias}">Mis Maquinarías</a>
+                                        <a class="dropdown-item" th:href="@{/perfil}">Perfil</a>
+                                        <a class="dropdown-item" th:href="@{/mis_empresas}">Mis Empresas</a>
+                                        <a class="dropdown-item" th:href="@{/mis_maquinarias}">Mis Maquinarías</a>
                                         <form th:action="@{/logout}" method="post" class="d-inline">
                                             <button type="submit" class="dropdown-item">Cerrar sesión</button>
                                         </form>
@@ -705,8 +705,8 @@
     <script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
     <!-- Slick Slider -->
     <script th:src="@{/plugins/slick-carousel/slick.min.js}"></script>
-    <!-- Google Map -->
-    <script th:src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <!-- Google Map 
+    <script th:src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>-->
     <script th:src="@{/plugins/google-map/gmap.js}"></script>
     <!-- main js -->
     <script th:src="@{/js/custom.js}"></script>
