@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class WebSecurityConfig {
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,22 +34,22 @@ public class WebSecurityConfig {
             )
             .logout((logout) -> logout.permitAll());
 
-            return http.build();
+        return http.build();
     }
 
     @Bean
     @Description("In memory Userdetails service registered since DB doesn´t have user table")
     public UserDetailsService users() {
         UserDetails user = User.builder()
-            .username("user")
-            .password(passwordEncoder().encode("password"))
-            .roles("USER")
-            .build();
+                .username("user")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER")
+                .build();
         UserDetails admin = User.builder()
-            .username("admin")
-            .password(passwordEncoder().encode("password"))
-            .roles("USER","ADMIN")
-            .build();
+                .username("admin")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER", "ADMIN")
+                .build();
         return new InMemoryUserDetailsManager(user, admin);
     }
 
