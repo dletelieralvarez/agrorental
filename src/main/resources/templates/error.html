@@ -3,12 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--Favicon-->
+    <link rel="shortcut icon" href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="icon" href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="@{/images/apple-touch-icon.png}">
+
+    <!-- THEME CSS
+	================================================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" th:href="@{/plugins/font-awesome/css/font-awesome.min.css}">
+    <!-- Slick Carousel -->
+    <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slick.css}">
+    <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slick-theme.css}">
+    <!-- main stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-danger">¡Ups! Ocurrió un error.</h1>
-        <p>Lo sentimos, algo salió mal. Por favor vuelve al <a th:href="@{/}">inicio</a>.</p>
+<body class="bg-light">
+
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="text-center">
+
+            <div class="mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#dc3545" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                    <path d="M7.938 2.016a.13.13 0 0 1 .125 0l6.857 12.01c.04.07.04.158 0 .229a.13.13 0 0 1-.11.065H1.19a.13.13 0 0 1-.11-.065.225.225 0 0 1 0-.23L7.938 2.016zM8 4.466 8 9.5a.5.5 0 0 1-1 0l.001-5.034a.5.5 0 1 1 1 0zM7.002 11a1 1 0 1 1 2-.001 1 1 0 0 1-2 .001z"/>
+                </svg>
+            </div>
+
+            <h1 class="text-danger fw-bold">¡Ups! Algo salió mal.</h1>
+            <p class="text-secondary mb-4">Ha ocurrido un error inesperado. Por favor, intenta nuevamente o vuelve al inicio.</p>
+
+            <a th:href="@{/}" class="btn btn-primary px-4">Volver al Inicio</a>
+        </div>
     </div>
+
 </body>
 </html>
