@@ -168,6 +168,12 @@
                                         aria-haspopup="true" aria-expanded="false">
                                         Hola, <span sec:authentication="name"></span>
                                     </a>
+                                     <a class="dropdown-item" th:href="@{/account}">Perfil</a>
+                                        <a class="dropdown-item" th:href="@{/signup}">Empresas</a>
+                                         <a class="dropdown-item" th:href="@{/account}">Maquinaría</a>
+                                        <a class="dropdown-item" th:href="@{/signup}">Mercado Arriendos</a>
+                                        
+
                                     <div class="dropdown-menu">
                                         <form th:action="@{/logout}" method="post" class="d-inline">
                                             <button type="submit" class="dropdown-item">Cerrar sesión</button>
