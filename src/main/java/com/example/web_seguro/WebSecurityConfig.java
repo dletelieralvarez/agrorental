@@ -20,8 +20,10 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers( 
-                    "/", "/home", "/index", "/account", "/error", "/mis_empresas", "/mis_maquinarias", "/perfil",
+                    "/", "/home", "/index", "/account", "/error",
                     "/css/**", "/js/**", "/images/**", "/plugins/**", "/webjars/**").permitAll()
+                       // Rutas privadas (solo usuarios logueados)
+                .requestMatchers("/mis_empresas", "/mis_maquinarias", "/perfil").authenticated()
                 .anyRequest()
                 .authenticated()
             )
