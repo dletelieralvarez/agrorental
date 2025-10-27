@@ -20,7 +20,7 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers( 
-                    "/", "/home", "/index", "/account", "/error",
+                    "/", "/home", "/index", "/account", "/error", "/mis_empresas", "/mis_maquinarias", "/perfil",
                     "/css/**", "/js/**", "/images/**", "/plugins/**", "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated()

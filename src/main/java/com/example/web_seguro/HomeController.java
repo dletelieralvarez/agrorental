@@ -22,6 +22,26 @@ public class HomeController {
         return "account";
     }
 
+    @GetMapping("/mis_empresas")
+    public String getMisEmpresas(@RequestParam(name="name", required = false, defaultValue = "Seguridad y Calidad en el Desarrollo") String name,
+                        Model model) {
+        model.addAttribute("name", name);
+        return "mis_empresas";
+    }
+
+    @GetMapping("/mis_maquinarias")
+    public String getMisMaquinarias(@RequestParam(name="name", required = false, defaultValue = "Seguridad y Calidad en el Desarrollo") String name,
+                        Model model) {
+        model.addAttribute("name", name);
+        return "mis_maquinarias";
+    }
+
+    @GetMapping("/perfil")
+    public String getPerfil(@RequestParam(name="name", required = false, defaultValue = "Seguridad y Calidad en el Desarrollo") String name,
+                        Model model) {
+        model.addAttribute("name", name);
+        return "perfil";
+    }
 
     // @GetMapping("/")
     // public String root(@RequestParam(name="name", required = false, defaultValue = "Seguridad y Calidad en el Desarrollo") String name, 
