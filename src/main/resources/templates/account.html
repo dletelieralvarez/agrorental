@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    
+
     <!-- THEME CSS
 	================================================== -->
     <!-- Bootstrap -->
@@ -32,87 +32,96 @@
     <!-- manin stylesheet -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+    <!-- Contenido para usuarios autenticados -->
+<div sec:authorize="isAuthenticated()">
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+        <h1 th:inline="text">Hola <span th:remove="tag" sec:authentication="name"></span>!</h1>
+        <h2 class="mb-3">Seguridad implementada con Spring Security</h2>
+        <p class="mb-4">Ya estás logueado, no necesitas volver a iniciar sesión.</p>
 
+        <div class="d-flex gap-2">
+            <!-- Botón Logout -->
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+            </form>
 
-<section class="login-signup section-padding">
-    <div class="container">
-        <div class="row align-items-center justify-content-center">
-            <div class="col-lg-7">
-                <div class="login">
-                    <div class="text-center"><a href="index.html"><img src="images/logos/logoA.png" alt="" class="img-fluid"></a></div>
-
-                    <h3 class="mt-4">Login Here</h3>
-                    <p class="mb-5">Enter your valid mail & password</p>
-                  <!--  <form action="#" class="login-form row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="loginemail">Email</label>
-                                <input type="text" id="loginemail" class="form-control" name="loginemail" placeholder="Ingresa tu email" required>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="loginPassword">Contraseña</label>
-                                <input type="password" id="loginPassword" class="form-control" name="loginPassword" placeholder="Contraseña" required>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-primary" type="submit">Ingresar</button>
-
-                            <p class="mt-5 mb-0">¿No eres miembro todavía? <a href="signup.html">Regístrate aquí</a></p>
-                        </div>
-                    </form>-->
- <!-- Mensaje de error -->
-    <div th:if="${param.error}" class="alert alert-danger">
-        Invalid username or password.
-    </div>
-
-    <!-- Mensaje de logout -->
-    <div th:if="${param.logout}" class="alert alert-success">
-        You have been logged out successfully.
-    </div>
-    
-                    <form th:action="@{/login}" method="post" class="login-form row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label for="loginemail">Email</label>
-            <input type="text" id="loginemail" class="form-control" name="username" placeholder="Enter mail" required>
+            <!-- Botón Volver al inicio -->
+            <a th:href="@{/}" class="btn btn-secondary">Volver al inicio</a>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="form-group">
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" class="form-control" name="password" placeholder="Password" required>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <button class="btn btn-primary" type="submit">Login</button>
-        <p class="mt-5 mb-0">Not a member yet? <a th:href="@{/signup}">Register Here</a></p>
-    </div>
-</form>
+</div>
 
 
+    <!-- Contenido para usuarios NO autenticados -->
+    <div sec:authorize="!isAuthenticated()">
+        <section class="login-signup section-padding">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="login">
+                            <div class="text-center">
+                                <a href="index.html"><img src="images/logos/logoA.png" alt="" class="img-fluid"></a>
+                            </div>
+
+                            <h3 class="mt-4">Login Aquí</h3>
+                            <p class="mb-5">Ingrese su nombre de usuario y contraseña</p>
+
+                            <!-- Mensaje de error -->
+                            <div th:if="${param.error}" class="alert alert-danger">
+                                Usuario o password invalido.
+                            </div>
+
+                            <!-- Mensaje de logout -->
+                            <div th:if="${param.logout}" class="alert alert-success">
+                                Se ha cerrado la sesión correctamente
+                            </div>
+
+                            <form th:action="@{/login}" method="post" class="login-form row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="loginemail">Nombre de usuario</label>
+                                        <input type="text" id="loginemail" class="form-control" name="username"
+                                            placeholder="Ingrese nombre de usuario" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="loginPassword">Password</label>
+                                        <input type="password" id="loginPassword" class="form-control" name="password"
+                                            placeholder="Password" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary" type="submit">Login</button>
+                                    <p class="mt-5 mb-0">
+                                        ¿Aún no eres miembro? <a th:href="@{/signup}">Registrarse Aquí</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-</section>
 
 
-<!-- THEME JAVASCRIPT FILES
+    <!-- THEME JAVASCRIPT FILES
 ================================================== -->
-<!-- initialize jQuery Library -->
-<script src="plugins/jquery/jquery.js"></script>
-<!-- Bootstrap jQuery -->
-<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-<!-- Slick Slider -->
-<script src="plugins/slick-carousel/slick.min.js"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
-<script src="plugins/google-map/gmap.js"></script>
-<!-- main js -->
-<script src="js/custom.js"></script>
+    <!-- initialize jQuery Library -->
+    <script src="plugins/jquery/jquery.js"></script>
+    <!-- Bootstrap jQuery -->
+    <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slick Slider -->
+    <script src="plugins/slick-carousel/slick.min.js"></script>
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script src="plugins/google-map/gmap.js"></script>
+    <!-- main js -->
+    <script src="js/custom.js"></script>
 
 </body>
+
 </html>

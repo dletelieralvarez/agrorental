@@ -26,7 +26,10 @@ public class WebSecurityConfig {
                 .authenticated()
             )
             .formLogin((form) -> form
-                .loginPage("/account")
+                .loginPage("/account") // GET del login formualario
+                .loginProcessingUrl("/login") //POST del login formulario
+                .defaultSuccessUrl("/",true)
+                .failureUrl("/account?error")
                 .permitAll()
             )
             .logout((logout) -> logout.permitAll());
