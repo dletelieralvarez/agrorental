@@ -18,7 +18,7 @@ import com.example.web_seguro.repository.UsuarioRepository;
  * que deben ser procesadas cuando se inicia la aplicación.
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class DataInitializer {
 
     // este codigo se ejecuta automaticamente al arrancar la aplicación
