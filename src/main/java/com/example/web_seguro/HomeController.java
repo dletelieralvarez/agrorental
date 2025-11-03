@@ -15,13 +15,14 @@ public class HomeController {
         return "index";
     }
     
+   /*  
     @GetMapping("/account")
     public String getAccount(@RequestParam(name="name", required = false, defaultValue = "Seguridad y Calidad en el Desarrollo") String name,
                         Model model) {
         model.addAttribute("name", name);
         return "account";
     }
- /* 
+ 
    
     @GetMapping("/mis_empresasxxx")
     public String getMisEmpresas(@RequestParam(name="name", required = false, defaultValue = "Seguridad y Calidad en el Desarrollo") String name,

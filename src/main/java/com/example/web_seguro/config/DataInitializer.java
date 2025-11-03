@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.web_seguro.model.Usuario;
 import com.example.web_seguro.repository.UsuarioRepository;
@@ -21,6 +22,8 @@ import com.example.web_seguro.repository.UsuarioRepository;
 @Configuration
 public class DataInitializer {
 
+    // Declarar el encoder
+     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     // este codigo se ejecuta automaticamente al arrancar la aplicación
     // verifica si hay datos para no duplicar
     // si no hay datos crea algunos de prueba
@@ -33,8 +36,17 @@ public class DataInitializer {
             if (usuarioRepository.count() == 0) {
                 log.info("Inicializando base de datos...");
 
+            
                 List<Usuario> users = Arrays.asList(
                         // Spring Boot
+                           new Usuario(
+                                null,
+                                UUID.randomUUID().toString(),
+                                "Admin",
+                                "Admin",
+                                "Admin",
+                                "admin@duocuc.cl",
+                                 encoder.encode("123456"),"ADMIN"),
                         new Usuario(
                                 null,
                                 UUID.randomUUID().toString(),
@@ -42,7 +54,7 @@ public class DataInitializer {
                                 "González",
                                 "López",
                                 "pedro@duocuc.cl",
-                                "123456"),
+                                 encoder.encode("123456"),"USER"),
                         new Usuario(
                                 null,
                                 UUID.randomUUID().toString(),
@@ -50,7 +62,7 @@ public class DataInitializer {
                                 "Pérez",
                                 "Rojas",
                                 "juan@duocuc.cl",
-                                "123456"),
+                                 encoder.encode("123456"),"USER"),
                         new Usuario(
                                 null,
                                 UUID.randomUUID().toString(),
@@ -58,12 +70,14 @@ public class DataInitializer {
                                 "Soto",
                                 "Muñoz",
                                 "diego@duocuc.cl",
-                                "123456")
+                                encoder.encode("123456"),
+                                "USER")
 
                 );
+                
 
-                usuarioRepository.saveAll(users);
-                log.info("✅ {} usuarios insertados correctamente", users.size());
+               usuarioRepository.saveAll(users);
+               log.info("✅ {} usuarios insertados correctamente", users.size());
             } else {
                 log.info("La base de datos ya contiene datos. Saltando inicialización.");
             }

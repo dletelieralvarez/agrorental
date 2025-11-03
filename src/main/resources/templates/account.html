@@ -34,28 +34,10 @@
 </head>
 
 <body>
-    <!-- Contenido para usuarios autenticados -->
-<div sec:authorize="isAuthenticated()">
-    <div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
-        <h1 th:inline="text">Hola <span th:remove="tag" sec:authentication="name"></span>!</h1>
-        <h2 class="mb-3">Seguridad implementada con Spring Security</h2>
-        <p class="mb-4">Ya estás logueado, no necesitas volver a iniciar sesión.</p>
-
-        <div class="d-flex gap-2">
-            <!-- Botón Logout -->
-            <form th:action="@{/logout}" method="post" class="d-inline">
-                <button type="submit" class="btn btn-primary">Cerrar sesión</button>
-            </form>
-
-            <!-- Botón Volver al inicio -->
-            <a th:href="@{/}" class="btn btn-secondary">Volver al inicio</a>
-        </div>
-    </div>
-</div>
-
+   
 
     <!-- Contenido para usuarios NO autenticados -->
-    <div sec:authorize="!isAuthenticated()">
+    <div >
         <section class="login-signup section-padding">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
@@ -82,14 +64,14 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="loginemail">Nombre de usuario</label>
-                                        <input type="text" id="loginemail" class="form-control" name="username"
+                                        <input type="text" id="loginemail" class="form-control" name="user"
                                             placeholder="Ingrese nombre de usuario" required>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="loginPassword">Password</label>
-                                        <input type="password" id="loginPassword" class="form-control" name="password"
+                                        <input type="password" id="loginPassword" class="form-control" name="encryptedPass"
                                             placeholder="Password" required>
                                     </div>
                                 </div>

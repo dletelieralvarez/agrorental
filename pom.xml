@@ -29,10 +29,10 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
-	<!-- Mover dependencyManagement fuera del bloque dependencies -->
+	<!-- Mover dependencyManagement fuera del bloque dependencies 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Oracle BOM -->
+			
 			<dependency>
 				<groupId>com.oracle.database.jdbc</groupId>
 				<artifactId>ojdbc-bom</artifactId>
@@ -41,16 +41,27 @@
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
-	</dependencyManagement>
+	</dependencyManagement>-->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		
+		 <!-- MySQL Driver -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+    </dependency>
+
+	<!-- Thymeleaf (si usas vistas HTML) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
+		<!-- starter web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -60,6 +71,7 @@
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
+<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -86,15 +98,17 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
+<!--
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
+		-->
 
 
+		<!-- data-jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -111,7 +125,7 @@
 			<artifactId>ojdbc8</artifactId>
 		</dependency>-->
 		
-		<!-- Oracle Wallet support dependencies -->
+		<!-- Oracle Wallet support dependencies 
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ucp</artifactId>
@@ -119,7 +133,8 @@
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>oraclepki</artifactId>
-		</dependency>
+		</dependency>-->
+		<!--
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>osdt_core</artifactId>
@@ -128,7 +143,7 @@
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>osdt_cert</artifactId>
 		</dependency>
-
+-->
 		 <!-- Development -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -136,7 +151,23 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
+<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>		
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
  <!-- Development 
 		<dependency>
   <groupId>me.paulschwarz</groupId>

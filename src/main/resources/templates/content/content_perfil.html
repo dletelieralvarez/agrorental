@@ -1,4 +1,4 @@
-<div th:fragment="html_perfil">
+<div th:fragment="html_perfil_content">
     <div class="breadcrumb-wrapper">
         <div class="container">
             <div class="row">
@@ -14,6 +14,7 @@
         </div>
     </div>
 
+   
     <section class="section-padding">
         <div class="container">
             <div class="row">
@@ -38,20 +39,27 @@
                     <div class="card border-0 shadow-sm mb-5">
                         <div class="card-header bg-dark text-white">
                             <strong>Resumen de tu cuenta</strong>
+                            <!-- Así debe ser con th:text 
+    <p>Email: <span th:text="${email}"></span></p>
+    <p>Rol: <span th:text="${rol}"></span></p>
+    <p>Nombre: <span th:text="${name}"></span></p>
+
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled info-list mt-2 mb-0">
                                 <li class="mb-2">
                                     <strong>Nombre:</strong>
-                                    <span>Juan Pérez</span>
+                                   <span th:text="${nombres}">[nombres]</span>
+                                   <span th:text="${paterno}">[paterno]</span>
+                                    <span th:text="${materno}">[materno]</span>
                                 </li>
                                 <li class="mb-2">
                                     <strong>Correo:</strong>
-                                    <span>juan.perez@campo.cl</span>
+                                    <span th:text="${email}">[email]</span>
                                 </li>
                                 <li class="mb-2">
                                     <strong>Rol en AgroRental:</strong>
-                                    <span>Arrendatario</span>
+                                    <span th:text="${rol}">[roles]</span>
                                 </li>
                                 <li class="mb-2">
                                     <strong>Empresa / Razón Social:</strong>
