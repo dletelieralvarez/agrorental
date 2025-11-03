@@ -23,7 +23,7 @@ public class WebSecurityConfig {
                     "/", "/home", "/index", "/account", "/error","/signup","/contact",
                     "/css/**", "/js/**", "/images/**", "/plugins/**", "/webjars/**").permitAll()
                        // Rutas privadas (solo usuarios logueados)
-                .requestMatchers("/mis_empresas", "/mis_maquinarias", "/perfil").authenticated()
+                .requestMatchers("/mis_empresas", "/mis_maquinarias", "/perfil", "/recetas").authenticated()
                 .anyRequest()
                 .authenticated()
             )
