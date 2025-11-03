@@ -1,0 +1,220 @@
+<div th:fragment="html_perfil">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>Perfil</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
+                    <h2 class="mb-3">Mi Perfil</h2>
+                    <hr>
+
+                    <div class="mb-4">
+                        <p class="text-muted mb-2">Bienvenido,
+                            <strong><span sec:authentication="name">usuario</span></strong>
+                        </p>
+                        <p class="lead mb-1">
+                            Aquí puedes ver y actualizar la información de tu cuenta AgroRental.
+                        </p>
+                        <p class="mb-0">
+                            Estos datos se usan para coordinar arriendos de maquinaria y contacto con empresas
+                            agrícolas.
+                        </p>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mb-5">
+                        <div class="card-header bg-dark text-white">
+                            <strong>Resumen de tu cuenta</strong>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled info-list mt-2 mb-0">
+                                <li class="mb-2">
+                                    <strong>Nombre:</strong>
+                                    <span>Juan Pérez</span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Correo:</strong>
+                                    <span>juan.perez@campo.cl</span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Rol en AgroRental:</strong>
+                                    <span>Arrendatario</span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Empresa / Razón Social:</strong>
+                                    <span>Agro Servicios del Sur Ltda.</span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Último acceso:</strong>
+                                    <span>26-10-2025 20:14</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <strong>Editar información</strong>
+                        </div>
+
+                        <div class="card-body">
+                            <form th:action="@{/mi-perfil}" method="post">
+                                <div class="form-group">
+                                    <label for="nombreCompleto">Nombre completo</label>
+                                    <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto"
+                                        placeholder="Ej: Juan Ignacio Pérez">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="telefono">Teléfono de contacto</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono"
+                                        placeholder="+56 9 1234 5678">
+                                    <small class="text-muted">Visible sólo para empresas con las que aceptes
+                                        arriendo.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="region">Región</label>
+                                    <select class="form-control" id="region" name="region">
+                                        <option value="">Seleccionar...</option>
+                                        <option>Arica y Parinacota</option>
+                                        <option>Tarapacá</option>
+                                        <option>Antofagasta</option>
+                                        <option>Atacama</option>
+                                        <option>Coquimbo</option>
+                                        <option>Valparaíso</option>
+                                        <option>Metropolitana</option>
+                                        <option>OHiggins</option>
+                                        <option>Maule</option>
+                                        <option>Ñuble</option>
+                                        <option>Biobío</option>
+                                        <option>La Araucanía</option>
+                                        <option>Los Ríos</option>
+                                        <option>Los Lagos</option>
+                                        <option>Aysén</option>
+                                        <option>Magallanes</option>
+                                    </select>
+                                </div>
+
+                                <!--
+
+                            <div class="form-group">
+                                <label for="rubro">Rubro principal</label>
+                                <select class="form-control" id="rubro" name="rubro" th:value="">
+                                    <option value="">Seleccionar...</option>
+                                    <option>Arriendo de maquinaria agrícola</option>
+                                    <option>Siembra / preparación de suelo</option>
+                                    <option>Cosecha y logística</option>
+                                    <option>Forestal</option>
+                                    <option>Ganadería</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="descripcion">Descripción corta</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3"
+                                          placeholder="Ej: Trabajamos con tractores, retroexcavadoras y equipos de preparación de suelo en la VII y VIII región."
+                                          th:text=""></textarea>
+                            </div>
+
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save mr-1"></i> Guardar cambios
+                                </button>
+                            </div>
+                        -->
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mt-5">
+                        <div class="card-header bg-dark text-white">
+                            <strong>Seguridad de la cuenta</strong>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">¿Quieres cerrar sesión en este dispositivo?</p>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="fa fa-sign-out mr-1"></i> Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--
+            <div class="col-lg-4 col-md-4 d-none d-md-block">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <strong>Estado de cuenta</strong>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2"><strong>Arriendos activos:</strong>
+                            <span class="badge badge-primary" th:text="">3</span>
+                        </p>
+                        <p class="mb-2"><strong>Máquinas publicadas:</strong>
+                            <span class="badge badge-success" th:text="">5</span>
+                        </p>
+                        <p class="mb-2"><strong>Reputación:</strong>
+                            <span class="text-warning">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                            </span>
+                            <span class="small text-muted" th:text="">4.5 / 5</span>
+                        </p>
+                        <p class="mb-0"><small class="text-muted">La reputación mejora cumpliendo fechas y manteniendo buen estado de la maquinaria.</small></p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <strong>Ayuda rápida</strong>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fa fa-question-circle text-primary mr-2"></i>
+                                <a href="#" class="text-dark">¿Cómo publico una máquina?</a>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fa fa-shield text-primary mr-2"></i>
+                                <a href="#" class="text-dark">Buenas prácticas de arriendo seguro</a>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fa fa-phone text-primary mr-2"></i>
+                                <a href="#" class="text-dark">Soporte AgroRental</a>
+                            </li>
+                            <li class="mb-0">
+                                <i class="fa fa-file-text-o text-primary mr-2"></i>
+                                <a href="#" class="text-dark">Términos y condiciones</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        -->
+
+
+            </div>
+        </div>
+    </section>
+</div>
