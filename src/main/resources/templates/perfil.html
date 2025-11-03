@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layouts/main :: html_head"></head>
+<head th:replace="~{layouts/main :: html_head}"></head>
 
 <body>
 
     <div th:replace="~{layouts/main :: html_header}"></div>
 
-    <div th:replace="~{content/perfil :: html_perfil}"></div>
+    <div th:replace="~{content/content_perfil :: html_perfil_content}"></div>
 
     <div th:replace="~{layouts/main :: html_footer}"></div>
 
