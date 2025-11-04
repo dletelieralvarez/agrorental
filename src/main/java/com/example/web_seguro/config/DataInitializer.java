@@ -31,6 +31,10 @@ public class DataInitializer {
     // verifica si hay datos para no duplicar
     // si no hay datos crea algunos de prueba
     // similar a seeders de laravel, pero más sencillo
+    // este codigo se ejecuta automaticamente al arrancar la aplicación
+    // verifica si hay datos para no duplicar
+    // si no hay datos crea algunos de prueba
+    // similar a seeders de laravel, pero más sencillo
     @Bean
     CommandLineRunner initDatabase(
             UsuarioRepository usuarioRepository,
