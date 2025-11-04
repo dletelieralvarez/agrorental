@@ -1,0 +1,90 @@
+
+<div th:fragment="html_contacto_content">
+
+<div class="breadcrumb-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>Contacto</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				
+				<div class="row">
+					<div class="col-lg-8">
+						<h3 class="mt-4 mb-3">Contáctanos</h3>
+						<p>
+							Llámanos o envía nuestro formulario en línea para solicitar una cotización o realizar consultas generales sobre Designed Publishing Inc. y nuestros servicios. ¡Esperamos poder atenderte pronto!
+						</p>
+					</div>
+				</div>
+
+				<form id="contact-form" class="my-5">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="form-group">
+								<label for="exampleFormControlSelect1">¡Hola! ¿Por qué motivo nos contactas hoy?</label>
+								<select class="form-control" id="exampleFormControlSelect1">
+									<option>Por favor selecciona</option>
+									<option>Necesito soporte técnico</option>
+									<option>Tengo problemas al publicar un artículo</option>
+									<option>Estoy interesado en publicar un anuncio</option>
+									<option>Quiero proponer una historia</option>
+									<option>Necesito apoyo en un tema de seguridad</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label for="name">Tu nombre*:</label>
+								<input class="form-control form-control-name" name="name" id="name" type="text" required>
+							</div>
+
+							<div class="form-group">
+								<label for="email">Tu correo electrónico*:</label>
+								<input class="form-control form-control-email" name="email" id="email" type="email" required>
+							</div>
+
+							<div class="form-group">
+								<label for="subject">Tema de tu consulta*:</label>
+								<input class="form-control form-control-subject" name="subject" id="subject" required>
+							</div>
+
+							<div class="form-group">
+								<label for="message">Tu mensaje*:</label>
+								<textarea class="form-control form-control-message" name="message" id="message" rows="7" required></textarea>
+							</div>
+
+							<button class="btn btn-primary solid blank mt-3" type="submit">Enviar mensaje</button>
+						</div>
+
+						<div class="col-lg-4">
+							<h4 class="text-black mb-4 mt-5 mt-lg-0">¡Hola! Queremos asegurarnos de que tu mensaje o comentario llegue al equipo correcto. </h4>
+							<p class="lead">Por favor, lee atentamente lo siguiente antes de enviar el formulario:</p>
+							
+							<ul class="list-unstyled">
+								<li class="mb-3">1. Solo podemos atender temas relacionados con themefisher.com. No tenemos relación con los sitios sobre los que escribimos.</li>
+								<li class="mb-3">2. Si deseas enviar noticias, revisa la página “Enviar noticias” para más información.</li>
+								<li class="mb-3">3. Para obtener más información sobre publicidad, revisa primero nuestra página de Información Publicitaria.</li>
+							</ul>
+							
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+</div>
