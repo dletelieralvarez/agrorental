@@ -146,7 +146,9 @@ private void ___setAuthentication__(Claims claims) {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
         try {
+                        
             // Log: muestro qué ruta está siendo accedida
             logger.info("=== Filtro JWT ===");
             logger.info("URI: {}", request.getRequestURI());
