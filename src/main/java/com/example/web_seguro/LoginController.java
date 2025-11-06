@@ -68,7 +68,7 @@ public class LoginController {
             }
 
             logger.info("Login exitoso para: {}", username);
-            String token = jwtAuthtenticationConfig.getJWTToken(username);
+            String token = jwtAuthtenticationConfig.getJWTToken(userDetails);
             logger.info("Token generado: {}", token.substring(0, 20) + "...");
 
             // Guarda el token en cookie

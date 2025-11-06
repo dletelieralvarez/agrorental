@@ -84,29 +84,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 .getPayload();
     }
 
-    @SuppressWarnings("unchecked")
-private void ___setAuthentication__(Claims claims) {
-    Object authoritiesClaim = claims.get("authorities");
-    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-    if (authoritiesClaim instanceof List<?>) {
-        for (Object item : (List<?>) authoritiesClaim) {
-            if (item instanceof String role) {
-                authorities.add(new SimpleGrantedAuthority(role));
-            } else if (item instanceof Map<?, ?> map && map.containsKey("authority")) {
-                authorities.add(new SimpleGrantedAuthority(map.get("authority").toString()));
-            }
-        }
-    }
-
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-            claims.getSubject(),
-            null,
-            authorities
-    );
-
-    SecurityContextHolder.getContext().setAuthentication(auth);
-}
     // 3 Creo la autenticación y la guardo en el contexto de seguridad
     private void setAuthentication(Claims claims) {
         // Obtengo la lista de autoridades (roles) del token
