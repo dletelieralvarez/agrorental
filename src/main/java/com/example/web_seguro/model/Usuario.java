@@ -78,7 +78,7 @@ public class Usuario implements UserDetails {
     private String password;
     
     // rol
-    @NotBlank(message = "Rol no puede estar vacío")
+    //@NotBlank(message = "Rol no puede estar vacío")
     @Size(min = 1, max = 75, message = "Rol debe tener entre 1 y 255 caracteres")
     @Column(name = "ROL", length = 50, nullable = false)
     private String rol;

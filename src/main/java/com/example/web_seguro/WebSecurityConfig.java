@@ -25,7 +25,8 @@ public class WebSecurityConfig {
 
                                 .authorizeHttpRequests(authz -> authz
                                                 .requestMatchers("/", "/home", "/account", "/login","/signup", "/css/**",
-                                                                "/js/**", "/images/**", "/plugins/**","/error","/logout")
+                                                                "/js/**", "/images/**", "/plugins/**","/error","/logout",
+                                                                "/webjars/**","/favicon.ico")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .exceptionHandling(ex -> ex

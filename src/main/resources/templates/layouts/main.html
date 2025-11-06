@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!--Favicon-->
-    <link rel="shortcut icon" href="@{/images/favicon.ico}" type="image/x-icon">
-    <link rel="icon" href="@{/images/favicon.ico}" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="@{/images/apple-touch-icon.png}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/apple-touch-icon.png}">
 
     <!-- THEME CSS
 	================================================== -->
@@ -68,7 +68,7 @@
                     <div class="col-lg-12">
                         <nav class="navbar navbar-expand-lg site-main-nav navigation">
                             <a class="navbar-brand d-lg-none" href="/">
-                                <img th:src="@{/images/logos/logoA.png}" alt="">
+                                <img th:src="@{/images/logos/logoA.png}" alt="" href="/Home">
                             </a>
 
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -90,29 +90,6 @@
                                         </div>
                                     </li>
 
-                                    <!-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Post
-                                </a>
-                                <div class="dropdown-menu" >
-                                <a class="dropdown-item" href="post-left-sidebar.html">Post Left Sidebar</a>
-                                  <a class="dropdown-item" href="post-full-width.html">Post Full Width</a>
-                                  <a class="dropdown-item" href="single-post.html">Single Post</a>
-                                  <a class="dropdown-item" href="post-category-1.html">Category 1</a>
-                                  <a class="dropdown-item" href="post-category-2.html">Category 2</a>
-                                  <a class="dropdown-item" href="author.html">Author</a>
-                                </div>
-                            </li> -->
-                                    <!--
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  LOGIN
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="@{/account}">Login</a>
-                                  <a class="dropdown-item" href="@{/signup}">Registro</a>
-                                </div>
-                            </li>-->
                                     <li class="nav-item dropdown" sec:authorize="!isAuthenticated()">
                                         <a class="nav-link dropdown-toggle" href="#" role="button"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -143,28 +120,6 @@
                                         </div>
                                     </li>
 
-
-
-                                    <!-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  About
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="about.html">About</a>
-                                  <a class="dropdown-item" href="terms.html">Terms</a>
-                                  <a class="dropdown-item" href="privacy.html">Privacy Policy</a>
-                                  <a class="dropdown-item" href="job.html">Career</a>
-                                </div>
-                            </li>
-                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Pages
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="404.html">404 Page</a>
-                                  <a class="dropdown-item" href="search.html">Search Page</a>
-                                </div>
-                            </li> -->
 
                                   <li class="nav-item" sec:authorize="isAuthenticated()">
                                     <a class="nav-link" th:href="@{/contact}">Contacto</a>
