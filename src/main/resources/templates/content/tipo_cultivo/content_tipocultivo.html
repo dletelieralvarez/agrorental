@@ -1,0 +1,154 @@
+<div th:fragment="html_tipocultivo_content">
+    <!-- Update: revisión de rama mtapia -->
+    <style>
+        .container_table {
+            max-width: 1200px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+
+        .btn-edit {
+            padding: 6px 14px;
+            font-size: 12px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-edit i {
+            margin-right: 5px;
+        }
+
+        .btn-edit:hover {
+            background-color: #4338ca;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>Tipos de Cultivo</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+
+                    <div th:if="${param.success}" class="alert alert-success">✅ Registro agregado correctamente.</div>
+                    <div th:if="${param.updated}" class="alert alert-primary">✏️ Registro actualizado correctamente.
+                    </div>
+                    <div th:if="${param.deleted}" class="alert alert-danger">🗑️ Registro eliminado correctamente.</div>
+
+
+                    <div class="container_table">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="mb-0">🌱 Tipos de Cultivos</h4>
+
+                            <a th:href="@{/tiposcultivos/nuevo}" class="btn btn-success">
+                                <i class="fa fa-plus-circle me-1"></i> Nuevo
+                            </a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Descripción</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="cultivo, iterStat : ${cultivos}">
+                                        <td th:text="${iterStat.count}"></td>
+                                        <td th:text="${cultivo.descripcion}"></td>
+                                        <td class="text-center">
+                                            <a th:href="@{/tiposcultivos/editar/{uuid}(uuid=${cultivo.uuid})}"
+                                                class="btn btn-primary btn-edit">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar
+                                            </a>
+
+                                            <!-- Botón que abre el modal -->
+                                            <button type="button" class="btn btn-edit" data-bs-toggle="modal"
+                                                th:data-bs-target="'#confirmModal-' + ${cultivo.uuid}">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+
+                                            <!-- Modal de confirmación -->
+                                            <div class="modal fade" th:id="'confirmModal-' + ${cultivo.uuid}"
+                                                tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-danger text-white">
+                                                            <h5 class="modal-title">Confirmar eliminación</h5>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Cerrar">
+                                                                <span aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>¿Seguro que deseas eliminar el cultivo <strong
+                                                                    th:text="${cultivo.descripcion}"></strong>?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Cancelar</button>
+                                                            <form
+                                                                th:action="@{/tiposcultivos/eliminar/{uuid}(uuid=${cultivo.uuid})}"
+                                                                method="post">
+                                                                <button type="submit"
+                                                                    class="btn btn-danger">Eliminar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

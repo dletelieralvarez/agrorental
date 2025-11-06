@@ -85,6 +85,7 @@ public class Usuario implements UserDetails {
 
 
     // --- Implementación de UserDetails ---
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + rol));
@@ -119,5 +120,6 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
+
+
 }
