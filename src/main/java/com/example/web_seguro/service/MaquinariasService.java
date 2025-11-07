@@ -6,11 +6,9 @@ import com.example.web_seguro.model.Maquinarias;
 import com.example.web_seguro.model.TipoMaquinaria;
 import com.example.web_seguro.repository.MaquinariasRepository;
 import com.example.web_seguro.repository.TipoMaquinariaRepository;
-
+import org.springframework.data.domain.Sort;
 import jakarta.transaction.Transactional;
 
-import java.beans.Transient;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -128,6 +126,10 @@ public class MaquinariasService {
 
     public List<Maquinarias> listaMaquinariasDisponibles(){
         return maquinariasRepository.findByDisponible("SI"); 
+    }
+
+    public List<TipoMaquinaria> listaTipoMaquinarias() {
+        return tipoMaquinariaRepository.findAll(Sort.by("descripcion").ascending());
     }
 
 }
