@@ -1,9 +1,6 @@
 package com.example.web_seguro.service;
 
 import com.example.web_seguro.repository.TipoMaquinariaRepository;
-import com.example.web_seguro.repository.UsuarioRepository;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.web_seguro.model.TipoMaquinaria;
 import org.springframework.transaction.annotation.Transactional;
