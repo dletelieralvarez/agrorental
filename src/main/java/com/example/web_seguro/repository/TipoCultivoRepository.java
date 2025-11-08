@@ -11,6 +11,7 @@ import com.example.web_seguro.model.TipoCultivo;
 @Repository
 public interface TipoCultivoRepository extends JpaRepository<TipoCultivo, Long> {
     Optional<TipoCultivo> findByUuid(String uuid); // para buscar por uuid
+    Optional<TipoCultivo> findByDescripcion(String descripcion);
     List<TipoCultivo> findAllByOrderByDescripcionAsc(); // para ordenar por descripcion
     
 }

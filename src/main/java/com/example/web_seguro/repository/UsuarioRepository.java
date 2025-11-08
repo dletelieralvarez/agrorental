@@ -9,6 +9,6 @@ import com.example.web_seguro.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-            //Usuario findByEmail(String email);
+            Optional<Usuario> findByNombres(String nombres);
             Optional<Usuario> findByEmail(String email);
 }

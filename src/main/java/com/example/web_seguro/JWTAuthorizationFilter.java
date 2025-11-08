@@ -143,6 +143,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                     setAuthentication(claims);
                     logger.info("Autenticación establecida para: {}", claims.getSubject());
                     logger.info("Roles: {}", claims.get("authorities"));
+                    //logger.info("Token: {}", token);
                 } else {
                     // Si no tiene roles, limpio el contexto
                     logger.warn("Token sin authorities");
