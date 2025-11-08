@@ -26,7 +26,6 @@ public class WebSecurityConfig {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
-
                                 .authorizeHttpRequests(authz -> authz
                                                 .requestMatchers("/", "/home", "/account", "/login","/signup", "/css/**",
                                                                 "/js/**", "/images/**", "/plugins/**","/error","/logout",
