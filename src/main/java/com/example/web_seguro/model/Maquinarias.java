@@ -77,5 +77,17 @@ public class Maquinarias {
     @JoinColumn(name = "empresas_id", nullable = false,
             foreignKey = @ForeignKey(name = "MAQUINARIAS_EMPRESAS_FK"))
     private Empresa empresa;
+
+    @Size(max = 255)
+    @Column(name = "foto_a", length = 255)
+    private String fotoA;
+
+    @Size(max = 255)
+    @Column(name = "foto_b", length = 255)
+    private String fotoB;
+
+    @Size(max = 255)
+    @Column(name = "foto_c", length = 255)
+    private String fotoC;
     
 }

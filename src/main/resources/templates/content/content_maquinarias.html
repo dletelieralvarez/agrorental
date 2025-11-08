@@ -19,12 +19,12 @@
         <div class="container">
 
             <form th:object="${maq}"
-                  th:action="${editMode} ? @{/maquinarias/actualizar/{id}(id=${maq.id})}
+                  th:action="${editMode} ? @{/maquinarias/actualizar/{uuid}(uuid=${maq.uuid})}
                                          : @{/maquinarias/guardarMaquinaria}"
                   method="post"
                   class="signup-form row">
 
-                <input type="hidden" th:field="*{id}">
+                <!-- <input type="hidden" th:field="*{id}"> -->
                 <input type="hidden" th:field="*{uuid}">
 
                 <div class="col-md-12">
@@ -118,20 +118,6 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Tipo maquinaria</label>
-                        <select class="form-control" th:field="*{tiposMaquinarias}">
-                            <option value="">Seleccione</option>
-                            <option th:each="t : ${listaTipos}"
-                                    th:value="${t.id}"
-                                    th:text="${t.descripcion}">
-                            </option>
-                        </select>
-                        <div class="text-danger" th:errors="*{tiposMaquinarias}"></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
                         <label>Empresa</label>
                         <select class="form-control" th:field="*{empresa}">
                         <option value="">Seleccione</option>
@@ -144,6 +130,47 @@
                     </div>
                 </div> 
 
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tipo maquinaria</label>
+                        <select class="form-control" th:field="*{tiposMaquinarias}">
+                            <option value="">Seleccione</option>
+                            <option th:each="t : ${listaTipos}"
+                                    th:value="${t.id}"
+                                    th:text="${t.descripcion}">
+                            </option>
+                        </select>
+                        <div class="text-danger" th:errors="*{tiposMaquinarias}"></div>
+                    </div>
+                </div>
+                    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Foto A (URL)</label>
+                        <input type="text" class="form-control"
+                            th:field="*{fotoA}">
+                        <div class="text-danger" th:errors="*{fotoA}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Foto B (URL)</label>
+                        <input type="text" class="form-control"
+                            th:field="*{fotoB}">
+                        <div class="text-danger" th:errors="*{fotoB}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Foto C (URL)</label>
+                        <input type="text" class="form-control"
+                            th:field="*{fotoC}">
+                        <div class="text-danger" th:errors="*{fotoC}"></div>
+                    </div>
+                </div>
+
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit"
                             th:text="${editMode} ? 'Actualizar' : 'Guardar'">
@@ -151,7 +178,7 @@
                     </button>
                 </div>
 
-                <div class="col-md-12 mt-3">
+                <div class="col-md-12 mt-3" id="alerts">
                     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
                     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
                 </div>
@@ -182,10 +209,10 @@
                             <td th:text="${m.disponible}"></td>
                             <td>
                                 <a class="btn btn-warning btn-sm"
-                                   th:href="@{/maquinarias/editar/{id}(id=${m.id})}">Editar</a>
+                                   th:href="@{/maquinarias/editar/{uuid}(uuid=${m.uuid})}">Editar</a>
                                 <a class="btn btn-danger btn-sm"
-                                   th:href="@{/maquinarias/eliminar/{id}(id=${m.id})}"
-                                   onclick="return confirm('¿Seguro de eliminar?')">Eliminar</a>
+                                   th:href="@{/maquinarias/eliminar/{uuid}(uuid=${m.uuid})}"
+                                   onclick="return confirm('¿Seguro de eliminar maquinaria?')">Eliminar</a>
                             </td>
                         </tr>
                         </tbody>

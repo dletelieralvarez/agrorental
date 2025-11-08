@@ -80,15 +80,15 @@ public class MaquinariasController {
             ra.addFlashAttribute("error", "Error interno al guardar el registro."); 
         }
 
-        return "redirect:/maquinarias"; 
+        return "redirect:/maquinarias#alerts"; 
     }
 
-    @GetMapping("/editar/{id}")
-    public String editarMaquinaria(@PathVariable Long id, Model model, RedirectAttributes ra) {
-        var opt = maquinariasService.buscaMaquinariaPorId(id); 
+    @GetMapping("/editar/{uuid}")
+    public String editarMaquinaria(@PathVariable String uuid, Model model, RedirectAttributes ra) {
+        var opt = maquinariasService.buscaMaquinariaPorUuid(uuid); 
         if (opt.isEmpty()) {
             ra.addFlashAttribute("error", "Maquinaria no existe.");
-            return "redirect:/maquinarias";
+            return "redirect:/maquinarias#alerts";
         }
 
         model.addAttribute("maq", opt.get());     
@@ -99,8 +99,8 @@ public class MaquinariasController {
         return "maquinarias";
     }
 
-    @PostMapping("/actualizar/{id}")
-    public String actualizarMaquinaria(@PathVariable Long id,
+    @PostMapping("/actualizar/{uuid}")
+    public String actualizarMaquinaria(@PathVariable String uuid,
                              @Valid @ModelAttribute("maq") Maquinarias maq,
                              BindingResult result,
                              Model model,
@@ -116,7 +116,7 @@ public class MaquinariasController {
         
         try
         {
-            maquinariasService.actualizarMaquinaria(id, maq); 
+            maquinariasService.actualizarMaquinaria(uuid, maq); 
             ra.addFlashAttribute("success", "Maquinaria actualizada correctamente.");
         }
         catch (DataIntegrityViolationException ex)
@@ -133,13 +133,13 @@ public class MaquinariasController {
             ra.addFlashAttribute("error", "Error interno al actualizar el registro.");
         }
 
-        return "redirect:/maquinarias";  
+        return "redirect:/maquinarias#alerts";  
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarMaquinaria(@PathVariable Long id, RedirectAttributes ra) {
+    public String eliminarMaquinaria(@PathVariable String uuid, RedirectAttributes ra) {
         try{
-            maquinariasService.eliminarMaquinaria(id); 
+            maquinariasService.eliminarMaquinaria(uuid); 
              ra.addFlashAttribute("success", "Maquinaria eliminada correctamente.");
         } catch (DataIntegrityViolationException ex) {            
             log.warn("No se puede eliminar: FK en uso", ex);
@@ -150,7 +150,7 @@ public class MaquinariasController {
             log.error("Error al eliminar maquinaria", ex);
             ra.addFlashAttribute("error", "Error interno al eliminar el registro.");
         }
-        return "redirect:/maquinarias";        
+        return "redirect:/maquinarias#alerts";        
     }
 
 }

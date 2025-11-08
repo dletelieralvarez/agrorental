@@ -14,6 +14,8 @@ import com.example.web_seguro.model.TipoMaquinaria;
 public interface MaquinariasRepository extends JpaRepository<Maquinarias, Long> {
     
     Optional<Maquinarias> findByUuid(String uuid); 
+    boolean existsByUuid(String uuid); 
+    void deleteByUuid(String uuid); 
     List<Maquinarias> findByEmpresa(Empresa empresa); 
     List<Maquinarias> findByTiposMaquinarias(TipoMaquinaria tiposMaquinarias);
     List<Maquinarias> findByDisponible(String disponible); 

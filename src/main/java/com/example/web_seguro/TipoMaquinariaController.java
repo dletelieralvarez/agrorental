@@ -63,9 +63,9 @@ public class TipoMaquinariaController {
         return "redirect:/tipomaquinaria"; 
     }
 
-    @GetMapping("/editar/{id}")
-    public String editarTipoMaquinaria(@PathVariable Long id, Model model, RedirectAttributes ra) {
-        var opt = tipoMaqService.buscarTipoMaquinariaPorID(id);
+    @GetMapping("/editar/{uuid}")
+    public String editarTipoMaquinaria(@PathVariable String uuid, Model model, RedirectAttributes ra) {
+        var opt = tipoMaqService.buscarTipoMaquinariaPorUuid(uuid);
         if (opt.isEmpty()) {
             ra.addFlashAttribute("error", "El tipo de maquinaria no existe.");
             return "redirect:/tipomaquinaria";
@@ -77,8 +77,8 @@ public class TipoMaquinariaController {
         return "tipomaquinaria";
     }
 
-    @PostMapping("/actualizar/{id}")
-    public String actualizarTipoMaquinaria(@PathVariable Long id,
+    @PostMapping("/actualizar/{uuid}")
+    public String actualizarTipoMaquinaria(@PathVariable String uuid,
                              @Valid @ModelAttribute("tipo") TipoMaquinaria tipoForm,
                              BindingResult result,
                              Model model,
@@ -92,7 +92,7 @@ public class TipoMaquinariaController {
         
         try
         {
-            tipoMaqService.actualizaTipoMaquinaria(id, tipoForm); 
+            tipoMaqService.actualizaTipoMaquinaria(uuid, tipoForm); 
             ra.addFlashAttribute("success", "Tipo de maquinaria actualizado correctamente.");
         }
         catch (DataIntegrityViolationException ex)
@@ -112,10 +112,10 @@ public class TipoMaquinariaController {
         return "redirect:/tipomaquinaria";  
     }
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminarTipoMaquinaria(@PathVariable Long id, RedirectAttributes ra) {
+    @GetMapping("/eliminar/{uuid}")
+    public String eliminarTipoMaquinaria(@PathVariable String uuid, RedirectAttributes ra) {
         try{
-            tipoMaqService.eliminarTipoMaquinaria(id);
+            tipoMaqService.eliminarTipoMaquinaria(uuid);
              ra.addFlashAttribute("success", "Tipo de maquinaria eliminado correctamente.");
         } catch (DataIntegrityViolationException ex) {            
             log.warn("No se puede eliminar: FK en uso", ex);

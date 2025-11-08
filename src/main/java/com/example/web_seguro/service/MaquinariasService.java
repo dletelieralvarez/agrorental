@@ -60,10 +60,10 @@ public class MaquinariasService {
     }
 
     @Transactional
-    public Maquinarias actualizarMaquinaria(Long id, Maquinarias maq)
+    public Maquinarias actualizarMaquinaria(String uuid, Maquinarias maq)
     {
-        Maquinarias existente = maquinariasRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Maquinaria no encontrada (id=" +id + ")"));
+        Maquinarias existente = maquinariasRepository.findByUuid(uuid)
+            .orElseThrow(() -> new IllegalArgumentException("Maquinaria no encontrada (Uuid=" +uuid + ")"));
         
         existente.setDescripcion(maq.getDescripcion());
         existente.setAnioFabricacion(maq.getAnioFabricacion());
@@ -74,6 +74,9 @@ public class MaquinariasService {
         existente.setFechaDisponible(maq.getFechaDisponible());
         existente.setPatente(maq.getPatente());
         existente.setDisponible(maq.getDisponible()); 
+        existente.setFotoA(maq.getFotoA());
+        existente.setFotoB(maq.getFotoB());
+        existente.setFotoC(maq.getFotoC());
 
         if (maq.getTiposMaquinarias() != null && maq.getTiposMaquinarias().getId() != null) {
             TipoMaquinaria tipo = tipoMaquinariaRepository.findById(maq.getTiposMaquinarias().getId())
@@ -91,11 +94,11 @@ public class MaquinariasService {
     }
 
     @Transactional
-    public void eliminarMaquinaria(Long id){
-        if(!maquinariasRepository.existsById(id)){
-            throw new IllegalArgumentException("La maquinaria no existe (id=" + id + ")"); 
+    public void eliminarMaquinaria(String uuid){
+        if(!maquinariasRepository.existsByUuid(uuid)){
+            throw new IllegalArgumentException("La maquinaria no existe (Uuid=" + uuid + ")"); 
         }
-        maquinariasRepository.deleteById(id);
+        maquinariasRepository.deleteByUuid(uuid);
     }
 
     public List<Maquinarias> listaMaquinarias(){
