@@ -8,4 +8,6 @@ import java.util.Optional;
 @Repository
 public interface TipoMaquinariaRepository extends JpaRepository<TipoMaquinaria, Long> {
     Optional<TipoMaquinaria> findByuuid(String uuid); 
+    boolean existsByUuid(String uuid);
+    void deleteByUuid(String uuid);
 }

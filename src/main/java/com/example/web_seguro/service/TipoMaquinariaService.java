@@ -29,16 +29,16 @@ public class TipoMaquinariaService {
     }
 
     @Transactional
-    public void eliminarTipoMaquinaria(Long id){
-        if(!tipoMaquinariaRepository.existsById(id)){
+    public void eliminarTipoMaquinaria(String uuid){
+        if(!tipoMaquinariaRepository.existsByUuid(uuid)){
             throw new RuntimeException("El tipo de maquinaria no existe"); 
         }
-        tipoMaquinariaRepository.deleteById(id);
+        tipoMaquinariaRepository.deleteByUuid(uuid);;
     }
 
     @Transactional
-    public TipoMaquinaria actualizaTipoMaquinaria(Long id, TipoMaquinaria tipoMaq){
-        TipoMaquinaria tipo = tipoMaquinariaRepository.findById(id)
+    public TipoMaquinaria actualizaTipoMaquinaria(String uuid, TipoMaquinaria tipoMaq){
+        TipoMaquinaria tipo = tipoMaquinariaRepository.findByuuid(uuid)
             .orElseThrow(()-> new RuntimeException("Tipo de maquinaria no encontrada")); 
 
         tipo.setDescripcion(tipoMaq.getDescripcion());

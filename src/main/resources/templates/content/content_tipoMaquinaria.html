@@ -31,7 +31,7 @@
                         <p class="mb-5">Administrar los tipos de maquinarias disponibles</p>
 
                         
-                        <form th:action="${editMode} ? @{/tipomaquinaria/actualizar/{id}(id=${tipo.id})} : @{/tipomaquinaria/guardarTipoMaquinaria}" 
+                        <form th:action="${editMode} ? @{/tipomaquinaria/actualizar/{uuid}(uuid=${tipo.uuid})} : @{/tipomaquinaria/guardarTipoMaquinaria}" 
                             th:object="${tipo}"
                             method="post" 
                             class="signup-form row">
@@ -83,10 +83,10 @@
                                     <td th:text="${item.id}"></td>
                                     <td th:text="${item.descripcion}"></td>
                                     <td>
-                                        <a class="btn btn-sm btn-warning" th:href="@{/tipomaquinaria/editar/{id}(id=${item.id})}">
+                                        <a class="btn btn-sm btn-warning" th:href="@{/tipomaquinaria/editar/{uuid}(uuid=${item.uuid})}">
                                             Editar
                                         </a>
-                                        <a class="btn btn-sm btn-danger" th:href="@{/tipomaquinaria/eliminar/{id}(id=${item.id})}"
+                                        <a class="btn btn-sm btn-danger" th:href="@{/tipomaquinaria/eliminar/{uuid}(uuid=${item.uuid})}"
                                            onclick="return confirm('¿Esta Seguro de eliminar el registro?')">
                                             Eliminar
                                         </a>
