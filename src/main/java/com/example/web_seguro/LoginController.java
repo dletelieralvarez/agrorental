@@ -1,12 +1,14 @@
 package com.example.web_seguro;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpHeaders;
 
 import com.example.web_seguro.service.CustomUserDetailsService;
 
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,12 +76,25 @@ public class LoginController {
 
             
             // Guarda el token en cookie
+            /*
             String tokenSinBearer = token.replace("Bearer ", "");
             Cookie jwtCookie = new Cookie("jwt_token", tokenSinBearer);
             jwtCookie.setHttpOnly(true);
             jwtCookie.setPath("/");
             jwtCookie.setMaxAge(24 * 60 * 60);
             response.addCookie(jwtCookie);
+            */
+            
+            String tokenSinBearer = token.replace("Bearer ", "");
+            ResponseCookie cookie = ResponseCookie.from("jwt_token", tokenSinBearer)
+            .httpOnly(true)
+            .secure(false) //para produccion se utiliza en true         
+            .sameSite("Strict")     
+            .path("/")
+            .maxAge(24 * 60 * 60)   
+            .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
             logger.info("Cookie establecida, redirigiendo a /");
 
