@@ -54,6 +54,8 @@ public class MaquinariasController {
                                         Model model, 
                                         RedirectAttributes ra)
     {
+        log.info("POST /maquinarias/guardarMaquinaria payload: {}", maq);
+
         if(result.hasErrors()){
             result.getFieldErrors().forEach(e -> 
             System.out.println("Field error: " + e.getField() + " -> " + e.getDefaultMessage()));
