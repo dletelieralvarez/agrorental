@@ -71,6 +71,7 @@ public class LoginController {
             String token = jwtAuthtenticationConfig.getJWTToken(userDetails);
             logger.info("Token generado: {}", token.substring(0, 20) + "...");
 
+            
             // Guarda el token en cookie
             String tokenSinBearer = token.replace("Bearer ", "");
             Cookie jwtCookie = new Cookie("jwt_token", tokenSinBearer);
@@ -80,7 +81,8 @@ public class LoginController {
             response.addCookie(jwtCookie);
 
             logger.info("Cookie establecida, redirigiendo a /");
-            return "redirect:/";
+
+           return "redirect:/";
             
         } catch (Exception e) {
             logger.error("Error en login: ", e);

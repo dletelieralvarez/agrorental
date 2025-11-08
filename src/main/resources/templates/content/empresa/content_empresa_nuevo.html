@@ -1,0 +1,58 @@
+<div th:fragment="html_empresa_nuevo">
+
+    <div class="container mt-5">
+        <div class="card p-4">
+            <h2 class="mb-3">Nueva Empresa</h2>
+
+            <form th:action="@{/empresas/nuevo}" th:object="${empresa}" method="post">
+
+                <div class="mb-3">
+                    <label for="razonSocial" class="form-label">Descripción</label>
+                    <input type="text" id="razonSocial" th:field="*{razonSocial}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" id="direccion" th:field="*{direccion}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="telefono" class="form-label">Telefóno</label>
+                    <input type="text" id="telefono" th:field="*{telefono}" class="form-control" required>
+                </div>
+
+
+                <div class="mb-3">
+    <label for="tipoCultivoUuid" class="form-label">Tipo de Cultivo</label>
+    <select id="tipoCultivoUuid" name="tipoCultivoUuid" class="form-control" required>
+        <option value="" disabled selected>Selecciona un tipo...</option>
+        <option th:each="tc : ${tiposCultivos}"
+                th:value="${tc.uuid}"
+                th:text="${tc.descripcion}">
+        </option>
+    </select>
+</div>
+
+
+
+                <button type="submit" class="btn btn-success">Agregar</button>
+                <a href="/empresas" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+    <div class="py-40"></div>
+</div>

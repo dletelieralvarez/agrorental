@@ -1,4 +1,4 @@
-package com.example.web_seguro;
+package com.example.web_seguro.controller;
 
 import java.util.List;
 
@@ -24,6 +24,7 @@ public class TipoCultivoController {
     @Autowired
     private TipoCultivoRepository tipoCultivoRepository;
 
+    
     @GetMapping("/todos")
     public String getTiposCultivos(Model model) {
         List<TipoCultivo> cultivos = tipoCultivoRepository.findAllByOrderByDescripcionAsc();
