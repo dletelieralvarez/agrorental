@@ -130,6 +130,20 @@
                     </div>
                 </div>
 
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <select class="form-control" th:field="*{empresa}">
+                        <option value="">Seleccione</option>
+                        <option th:each="e : ${listaEmpresas}"
+                            th:value="${e.id}"
+                            th:text="${e.razonSocial}">
+                        </option>
+                        </select>
+                            <div class="text-danger" th:errors="*{empresa}"></div>
+                    </div>
+                </div> 
+
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit"
                             th:text="${editMode} ? 'Actualizar' : 'Guardar'">

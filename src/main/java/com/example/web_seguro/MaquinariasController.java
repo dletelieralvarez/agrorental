@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.web_seguro.model.Maquinarias;
 import com.example.web_seguro.model.TipoMaquinaria;
+import com.example.web_seguro.service.EmpresaService;
 import com.example.web_seguro.service.MaquinariasService;
 import com.example.web_seguro.service.TipoMaquinariaService;
 
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MaquinariasController {
     private final MaquinariasService maquinariasService; 
     private final TipoMaquinariaService tipoMaquinariaService; 
+    private final EmpresaService empresaService; 
 
     @GetMapping 
     public String vistaMaquinarias(Model model) {
@@ -38,7 +40,8 @@ public class MaquinariasController {
         System.out.println("Field error: " + model);
         model.addAttribute("maq", new Maquinarias()); 
         model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
-        model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
+        model.addAttribute("lista", maquinariasService.listaMaquinarias());
+        model.addAttribute("listaEmpresas", empresaService.listaEmpresas()); 
         return "maquinarias";
     }
 
@@ -90,6 +93,8 @@ public class MaquinariasController {
 
         model.addAttribute("maq", opt.get());     
         model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
+        model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
+        model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
         model.addAttribute("editMode", true);     
         return "maquinarias";
     }
@@ -103,13 +108,15 @@ public class MaquinariasController {
      
         if(result.hasErrors()){
             model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
+            model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
+            model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
             model.addAttribute("editMode", true); 
             return "maquinarias";
         }        
         
         try
         {
-            maquinariasService.actualizarMaquinaria(id, maq, id); 
+            maquinariasService.actualizarMaquinaria(id, maq); 
             ra.addFlashAttribute("success", "Maquinaria actualizada correctamente.");
         }
         catch (DataIntegrityViolationException ex)

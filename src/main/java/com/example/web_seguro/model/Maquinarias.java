@@ -73,9 +73,9 @@ public class Maquinarias {
             foreignKey = @ForeignKey(name = "MAQUINARIAS_TIPOS_MAQUINARIAS_FK"))
     private TipoMaquinaria tiposMaquinarias;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "empresas_id", nullable = false,
             foreignKey = @ForeignKey(name = "MAQUINARIAS_EMPRESAS_FK"))
-    private Empresas empresas;
-    */
+    private Empresa empresa;
+    
 }

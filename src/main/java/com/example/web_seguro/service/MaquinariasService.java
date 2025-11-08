@@ -2,8 +2,10 @@ package com.example.web_seguro.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.web_seguro.model.Empresa;
 import com.example.web_seguro.model.Maquinarias;
 import com.example.web_seguro.model.TipoMaquinaria;
+import com.example.web_seguro.repository.EmpresaRepository;
 import com.example.web_seguro.repository.MaquinariasRepository;
 import com.example.web_seguro.repository.TipoMaquinariaRepository;
 import org.springframework.data.domain.Sort;
@@ -18,15 +20,15 @@ public class MaquinariasService {
     
     private final MaquinariasRepository maquinariasRepository; 
     private final TipoMaquinariaRepository tipoMaquinariaRepository; 
-    //private final EmpresasRepository empresasRepository; 
+    private final EmpresaRepository empresaRepository; 
 
     public MaquinariasService(MaquinariasRepository maquinariasRepository, 
-        TipoMaquinariaRepository tipoMaquinariaRepository)//, 
-        //EmpresasRepository EmpresasRepository)
+        TipoMaquinariaRepository tipoMaquinariaRepository, 
+        EmpresaRepository empresaRepository)
     {
         this.maquinariasRepository = maquinariasRepository; 
         this.tipoMaquinariaRepository = tipoMaquinariaRepository; 
-        //this.empresasRepository = empresasRepository; 
+        this.empresaRepository = empresaRepository; 
     }
 
     @Transactional
@@ -39,10 +41,10 @@ public class MaquinariasService {
 
     //crea una maquinaria recibiendo id de empresa y tipo maquinaria
     @Transactional
-    public Maquinarias guardarMaquinariaRel(Maquinarias maq, Long tipoMaquinariaId)//, Long empresaId)
+    public Maquinarias guardarMaquinariaRel(Maquinarias maq, Long tipoMaquinariaId, Long empresaId)
     {
-        //Empresas empresa = empresasRepository.findById(empresaId)
-        //    .orElseThrow(() -> new IllegalArgumentException("Empresa no encontrada (id=" + empresaId + ")"));
+        Empresa empresa = empresaRepository.findById(empresaId)
+            .orElseThrow(() -> new IllegalArgumentException("Empresa no encontrada (id=" + empresaId + ")"));
 
         TipoMaquinaria tipo = tipoMaquinariaRepository.findById(tipoMaquinariaId)
             .orElseThrow(() -> new IllegalArgumentException("Tipo de Maquinaria no encontrada (id=" +tipoMaquinariaId + ")"));
@@ -51,14 +53,14 @@ public class MaquinariasService {
             maq.setUuid(UUID.randomUUID().toString());
         }
 
-        //maq.setEmpresas(empresa);
+        maq.setEmpresa(empresa);
         maq.setTiposMaquinarias(tipo); 
         return maquinariasRepository.save(maq); 
 
     }
 
     @Transactional
-    public Maquinarias actualizarMaquinaria(Long id, Maquinarias maq, Long tipoMaquinariaId)//, Long empresaId)
+    public Maquinarias actualizarMaquinaria(Long id, Maquinarias maq)
     {
         Maquinarias existente = maquinariasRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Maquinaria no encontrada (id=" +id + ")"));
@@ -73,18 +75,16 @@ public class MaquinariasService {
         existente.setPatente(maq.getPatente());
         existente.setDisponible(maq.getDisponible()); 
 
-        //if(empresaId != null){
-        //    Empresas empresa = empresasRepository.findById(empresaId)
-        //        .orElseThrow(() -> new IllegalArgumentException("Empresa no encontrada (id=" +empresaId + ")"));
-        //      existente.setEmpresas(empresa); 
-        //}
+        if (maq.getTiposMaquinarias() != null && maq.getTiposMaquinarias().getId() != null) {
+            TipoMaquinaria tipo = tipoMaquinariaRepository.findById(maq.getTiposMaquinarias().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Tipo de Maquinaria no encontrada"));
+            existente.setTiposMaquinarias(tipo);
+        }
 
-        if(tipoMaquinariaId != null)
-        {
-            TipoMaquinaria tipo = tipoMaquinariaRepository.findById(tipoMaquinariaId)
-                .orElseThrow(() -> new IllegalArgumentException("Tipo de Maquinaria no encontrada (id=" +tipoMaquinariaId + ")"));
-            
-            existente.setTiposMaquinarias(tipo); 
+        if (maq.getEmpresa() != null && maq.getEmpresa().getId() != null) {
+            Empresa empresa = empresaRepository.findById(maq.getEmpresa().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Empresa no encontrada"));
+            existente.setEmpresa(empresa);
         }
 
         return maquinariasRepository.save(existente); 
@@ -110,13 +110,13 @@ public class MaquinariasService {
         return maquinariasRepository.findByUuid(uuid); 
     }
 
-    /*
+    
     public List<Maquinarias> listarMaquinariaPorEmpresa(Long empresaId){
-        Empresa empresa = empresasRepository.findById(empresaId)
+        Empresa empresa = empresaRepository.findById(empresaId)
             .orElseThrow(() -> new IllegalArgumentException("Empresa no encontrada (id=" +empresaId+ ")"));
-        return maquinariasRepository.findByEmpresas(empresa); 
+        return maquinariasRepository.findByEmpresa(empresa); 
     }
-    */
+    
 
     public List<Maquinarias> listaMaquinariasPorTipo(Long tipoId){
         TipoMaquinaria tipo = tipoMaquinariaRepository.findById(tipoId)
