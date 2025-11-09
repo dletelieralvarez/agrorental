@@ -12,9 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.web_seguro.model.Empresa;
 import com.example.web_seguro.model.TipoCultivo;
+import com.example.web_seguro.model.TipoMaquinaria;
 import com.example.web_seguro.model.Usuario;
 import com.example.web_seguro.repository.EmpresaRepository;
 import com.example.web_seguro.repository.TipoCultivoRepository;
+import com.example.web_seguro.repository.TipoMaquinariaRepository;
 import com.example.web_seguro.repository.UsuarioRepository;
 
 /*
@@ -42,7 +44,8 @@ public class DataInitializer {
     CommandLineRunner initDatabase(
             UsuarioRepository usuarioRepository,
             EmpresaRepository empresaRepository,
-            TipoCultivoRepository tipoCultivoRepository) {
+            TipoCultivoRepository tipoCultivoRepository,
+            TipoMaquinariaRepository tipoMaquinariaRepository) {
         return args -> {
             // Solo inserta datos si la tabla está vacía
             if (usuarioRepository.count() == 0) {
@@ -157,6 +160,29 @@ public class DataInitializer {
 
                 System.out.println("✅ Empresas iniciales creadas correctamente.");
             }
+
+            if (tipoMaquinariaRepository.count() == 0) {
+            List<String> maquinariasBase = List.of(
+                "Tractor",
+                "Coloso",
+                "Bomba de espalda",
+                "Cosechadora",
+                "Pulverizadora",
+                "Sembradora"
+            );
+
+            maquinariasBase.forEach(nombre -> {
+                TipoMaquinaria maquinaria = new TipoMaquinaria();
+                maquinaria.setUuid(UUID.randomUUID().toString());
+                maquinaria.setDescripcion(nombre);
+                tipoMaquinariaRepository.save(maquinaria);
+            });
+
+            System.out.println("✅ Tipos de maquinaria base insertados correctamente.");
+        } else {
+            System.out.println("ℹ️ Tipos de maquinaria ya existen. No se insertaron nuevos registros.");
+        }
+
 
         };
     }

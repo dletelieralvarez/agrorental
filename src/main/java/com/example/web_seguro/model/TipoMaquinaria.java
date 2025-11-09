@@ -1,5 +1,7 @@
 package com.example.web_seguro.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,4 +32,10 @@ public class TipoMaquinaria {
     @Column(name = "descripcion", nullable = false, length = 250)
     private String descripcion;
 
+   @PrePersist
+    public void prePersist() {
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString();
+        }
+    }
 }
