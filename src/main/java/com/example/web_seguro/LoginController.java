@@ -89,7 +89,7 @@ public class LoginController {
             ResponseCookie cookie = ResponseCookie.from("jwt_token", tokenSinBearer)
             .httpOnly(true)
             .secure(false) //para produccion se utiliza en true         
-            .sameSite("Strict")     
+            .sameSite("Strict")    // original Strict , Lax 
             .path("/")
             .maxAge(24 * 60 * 60)   
             .build();

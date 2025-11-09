@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,7 +35,8 @@ public class WebSecurityConfig {
                 http
                                 .authorizeHttpRequests(authz -> authz
                                 .requestMatchers("/", "/home", "/account", "/login","/signup", "/css/**",
-                                                                "/js/**", "/images/**", "/plugins/**","/error","/logout",
+                                                                "/js/**", "/images/**", "/plugins/**","/error","/salir",
+                                                                "/logout",
                                                                 "/webjars/**","/favicon.ico")
                                 .permitAll()
                                 .anyRequest().authenticated()
@@ -63,7 +66,10 @@ public class WebSecurityConfig {
                                         "frame-ancestors 'none';"
                                         )
                                 )
-                                .frameOptions(fo -> fo.deny())   //navegadores antiguos
+                                
+                                .frameOptions(fo -> fo.deny())   //navegadores antiguos evita clickjacking
+                                //.contentTypeOptions() // agrega X-content-type-Options: nosniff
+                                .contentTypeOptions(cto -> { }) // nueva forma de agregar X-content-type:nosniff
                                 );
 
                 return http.build();

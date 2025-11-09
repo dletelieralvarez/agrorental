@@ -25,7 +25,7 @@ public class TipoCultivoController {
     private TipoCultivoRepository tipoCultivoRepository;
 
     
-    @GetMapping("/todos")
+    @GetMapping("")
     public String getTiposCultivos(Model model) {
         List<TipoCultivo> cultivos = tipoCultivoRepository.findAllByOrderByDescripcionAsc();
         model.addAttribute("cultivos", cultivos);

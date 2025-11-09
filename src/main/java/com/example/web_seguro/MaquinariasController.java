@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @Controller
 @RequestMapping("/maquinarias")
-@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class MaquinariasController {
     private final MaquinariasService maquinariasService; 
