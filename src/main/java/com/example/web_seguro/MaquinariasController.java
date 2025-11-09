@@ -136,7 +136,7 @@ public class MaquinariasController {
         return "redirect:/maquinarias#alerts";  
     }
 
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/eliminar/{uuid}")
     public String eliminarMaquinaria(@PathVariable String uuid, RedirectAttributes ra) {
         try{
             maquinariasService.eliminarMaquinaria(uuid); 
