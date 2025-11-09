@@ -11,13 +11,13 @@ package com.example.web_seguro;
 @Controller
 public class LogoutController {
     private static final Logger logger = LoggerFactory.getLogger(LogoutController.class);
-
+/* 
     @GetMapping("/salir")
     public String logoutGet() {
         logger.info("GET /logout");
         return "redirect:/login";
     }
-
+*/
     @PostMapping("/salir")
     public String logout(HttpServletResponse response) {
         logger.info("Logout solicitado");

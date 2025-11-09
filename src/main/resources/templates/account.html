@@ -61,17 +61,23 @@
                             </div>
 
                             <form th:action="@{/login}" method="post" class="login-form row">
+                              
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="loginemail">Nombre de usuario</label>
                                         <input type="text" id="loginemail" class="form-control" name="user"
+                                            maxlength="80"
+                                            autocomplete="off"
                                             placeholder="Ingrese nombre de usuario" required>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="loginPassword">Password</label>
-                                        <input type="password" id="loginPassword" class="form-control" name="encryptedPass"
+                                        <input type="password" id="loginPassword" 
+                                        autocomplete="off"
+                                        maxlength="250"
+                                        class="form-control" name="encryptedPass"
                                             placeholder="Password" required>
                                     </div>
                                 </div>
