@@ -79,9 +79,10 @@ public class LoginController {
             logger.info("Token generado: {}", token.substring(0, 20) + "...");
 
             String tokenSinBearer = token.replace("Bearer ", "");
+            boolean isProd = "prod".equals(System.getenv("ENV"));
             ResponseCookie cookie = ResponseCookie.from("jwt_token", tokenSinBearer)
                     .httpOnly(true)
-                    .secure(false)        // en producción normalmente true
+                    .secure(isProd)        // en producción normalmente true
                     .sameSite("Strict")   // o "Lax" 
                     .path("/")
                     .maxAge(24 * 60 * 60)
