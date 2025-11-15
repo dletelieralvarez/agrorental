@@ -46,145 +46,169 @@ public class DataInitializer {
             EmpresaRepository empresaRepository,
             TipoCultivoRepository tipoCultivoRepository,
             TipoMaquinariaRepository tipoMaquinariaRepository) {
+
         return args -> {
-            // Solo inserta datos si la tabla está vacía
-            if (usuarioRepository.count() == 0) {
-                log.info("Inicializando base de datos...");
+            inicializarUsuarios(usuarioRepository);
+            inicializarTiposCultivo(tipoCultivoRepository);
+            inicializarEmpresas(empresaRepository, usuarioRepository, tipoCultivoRepository);
+            inicializarTiposMaquinaria(tipoMaquinariaRepository);
+        };
+    }
 
-                List<Usuario> users = Arrays.asList(
-                        // Spring Boot
-                        new Usuario(
-                                null,
-                                UUID.randomUUID().toString(),
-                                "Admin",
-                                "Admin",
-                                "Admin",
-                                "admin@duocuc.cl",
-                                encoder.encode("123456"), "ADMIN"),
-                        new Usuario(
-                                null,
-                                UUID.randomUUID().toString(),
-                                "Pedro",
-                                "González",
-                                "López",
-                                "pedro@duocuc.cl",
-                                encoder.encode("123456"), "USER"),
-                        new Usuario(
-                                null,
-                                UUID.randomUUID().toString(),
-                                "Juan",
-                                "Pérez",
-                                "Rojas",
-                                "juan@duocuc.cl",
-                                encoder.encode("123456"), "USER"),
-                        new Usuario(
-                                null,
-                                UUID.randomUUID().toString(),
-                                "Diego",
-                                "Soto",
-                                "Muñoz",
-                                "diego@duocuc.cl",
-                                encoder.encode("123456"),
-                                "USER")
+    private void inicializarUsuarios(UsuarioRepository usuarioRepository) {
+        // Solo inserta datos si la tabla está vacía
+        if (usuarioRepository.count() != 0) {
+            log.info("ℹ️ La tabla USUARIO ya contiene datos. Saltando inicialización de usuarios.");
+            return;
+        }
 
-                );
+        log.info("✅ Inicializando usuarios de ejemplo...");
 
-                usuarioRepository.saveAll(users);
-                log.info("✅ {} usuarios insertados correctamente", users.size());
-            } else {
-                log.info("La base de datos ya contiene datos. Saltando inicialización.");
-            }
+        List<Usuario> users = Arrays.asList(
+                new Usuario(
+                        null,
+                        UUID.randomUUID().toString(),
+                        "Admin",
+                        "Admin",
+                        "Admin",
+                        "admin@duocuc.cl",
+                        encoder.encode("123456"),
+                        "ADMIN"),
+                new Usuario(
+                        null,
+                        UUID.randomUUID().toString(),
+                        "Pedro",
+                        "González",
+                        "López",
+                        "pedro@duocuc.cl",
+                        encoder.encode("123456"),
+                        "USER"),
+                new Usuario(
+                        null,
+                        UUID.randomUUID().toString(),
+                        "Juan",
+                        "Pérez",
+                        "Rojas",
+                        "juan@duocuc.cl",
+                        encoder.encode("123456"),
+                        "USER"),
+                new Usuario(
+                        null,
+                        UUID.randomUUID().toString(),
+                        "Diego",
+                        "Soto",
+                        "Muñoz",
+                        "diego@duocuc.cl",
+                        encoder.encode("123456"),
+                        "USER")
+        );
 
-            // insertando tipos de cultivo con otra forma, con una función
-            if (tipoCultivoRepository.count() == 0) {
-                tipoCultivoRepository.saveAll(Arrays.asList(
-                        create("Trigo"),
-                        create("Maíz"),
-                        create("Cebada"),
-                        create("Avena"),
-                        create("Papa"),
-                        create("Tomate"),
-                        create("Uva de mesa"),
-                        create("Manzana"),
-                        create("Cerezo"),
-                        create("Durazno"),
-                        create("Frutilla"),
-                        create("Nogal"),
-                        create("Olivo"),
-                        create("Arándano"),
-                        create("Vides viníferas")));
-                System.out.println("✅ Tipos de cultivos iniciales insertados correctamente.");
-            }
+        usuarioRepository.saveAll(users);
+        log.info("✅ {} usuarios insertados correctamente", users.size());
+    }
 
+    private void inicializarTiposCultivo(TipoCultivoRepository tipoCultivoRepository) {
+        if (tipoCultivoRepository.count() != 0) {
+            log.info("ℹ️ Tipos de cultivo ya existen. Saltando inicialización.");
+            return;
+        }
 
-            if (empresaRepository.count() == 0) {
-                System.out.println("Inicializando empresas de ejemplo...");
+        tipoCultivoRepository.saveAll(Arrays.asList(
+                create("Trigo"),
+                create("Maíz"),
+                create("Cebada"),
+                create("Avena"),
+                create("Papa"),
+                create("Tomate"),
+                create("Uva de mesa"),
+                create("Manzana"),
+                create("Cerezo"),
+                create("Durazno"),
+                create("Frutilla"),
+                create("Nogal"),
+                create("Olivo"),
+                create("Arándano"),
+                create("Vides viníferas")
+        ));
 
-                // Buscar usuario Admin existente
-                Optional<Usuario> adminOpt = usuarioRepository.findByNombres("Admin");
-                if (adminOpt.isEmpty()) {
-                    System.err.println("No se encontró el usuario Admin existente.");
-                    return;
-                }
-                Usuario admin = adminOpt.get();
+        log.info("✅ Tipos de cultivos iniciales insertados correctamente.");
+    }
 
-                // Buscar tipo de cultivo Trigo existente
-                Optional<TipoCultivo> trigoOpt = tipoCultivoRepository.findByDescripcion("Trigo");
-                if (trigoOpt.isEmpty()) {
-                    System.err.println("❌ No se encontró el tipo de cultivo Trigo existente.");
-                    return;
-                }
-                TipoCultivo trigo = trigoOpt.get();
+    private void inicializarEmpresas(EmpresaRepository empresaRepository,
+                                     UsuarioRepository usuarioRepository,
+                                     TipoCultivoRepository tipoCultivoRepository) {
 
-                // Empresa A pruenba
-                Empresa empresaA = new Empresa();
-                empresaA.setUuid(UUID.randomUUID().toString());
-                empresaA.setRazonSocial("Empresa A Limitada");
-                empresaA.setDireccion("Av. Siempre Viva 123");
-                empresaA.setTelefono("+56 9 1234 5678");
-                empresaA.setNota("Empresa dedicada al cultivo de hortalizas");
-                empresaA.setUsuario(admin);
-                empresaA.setTipoCultivo(trigo);
-                empresaRepository.save(empresaA);
+        if (empresaRepository.count() != 0) {
+            log.info("ℹ️ Empresas ya existen. Saltando inicialización de empresas.");
+            return;
+        }
 
-                // Empresa B pruyeba
-                Empresa empresaB = new Empresa();
-                empresaB.setUuid(UUID.randomUUID().toString());
-                empresaB.setRazonSocial("Empresa B SpA");
-                empresaB.setDireccion("Calle Los Olivos 456");
-                empresaB.setTelefono("+56 9 8765 4321");
-                empresaB.setNota("Empresa especializada en frutales");
-                empresaB.setUsuario(admin);
-                empresaB.setTipoCultivo(trigo);
-                empresaRepository.save(empresaB);
+        log.info("✅ Inicializando empresas de ejemplo...");
 
-                System.out.println("✅ Empresas iniciales creadas correctamente.");
-            }
+        // Buscar usuario Admin existente
+        Optional<Usuario> adminOpt = usuarioRepository.findByNombres("Admin");
+        if (adminOpt.isEmpty()) {
+            log.error("❌ No se encontró el usuario Admin existente. No se pueden crear empresas.");
+            return;
+        }
+        Usuario admin = adminOpt.get();
 
-            if (tipoMaquinariaRepository.count() == 0) {
-            List<String> maquinariasBase = List.of(
+        // Buscar tipo de cultivo Trigo existente
+        Optional<TipoCultivo> trigoOpt = tipoCultivoRepository.findByDescripcion("Trigo");
+        if (trigoOpt.isEmpty()) {
+            log.error("❌ No se encontró el tipo de cultivo Trigo existente. No se pueden crear empresas.");
+            return;
+        }
+        TipoCultivo trigo = trigoOpt.get();
+
+        // Empresa A prueba
+        Empresa empresaA = new Empresa();
+        empresaA.setUuid(UUID.randomUUID().toString());
+        empresaA.setRazonSocial("Empresa A Limitada");
+        empresaA.setDireccion("Av. Siempre Viva 123");
+        empresaA.setTelefono("+56 9 1234 5678");
+        empresaA.setNota("Empresa dedicada al cultivo de hortalizas");
+        empresaA.setUsuario(admin);
+        empresaA.setTipoCultivo(trigo);
+        empresaRepository.save(empresaA);
+
+        // Empresa B prueba
+        Empresa empresaB = new Empresa();
+        empresaB.setUuid(UUID.randomUUID().toString());
+        empresaB.setRazonSocial("Empresa B SpA");
+        empresaB.setDireccion("Calle Los Olivos 456");
+        empresaB.setTelefono("+56 9 8765 4321");
+        empresaB.setNota("Empresa especializada en frutales");
+        empresaB.setUsuario(admin);
+        empresaB.setTipoCultivo(trigo);
+        empresaRepository.save(empresaB);
+
+        log.info("✅ Empresas iniciales creadas correctamente.");
+    }
+
+    private void inicializarTiposMaquinaria(TipoMaquinariaRepository tipoMaquinariaRepository) {
+        if (tipoMaquinariaRepository.count() != 0) {
+            log.info("ℹ️ Tipos de maquinaria ya existen. No se insertaron nuevos registros.");
+            return;
+        }
+
+        List<String> maquinariasBase = List.of(
                 "Tractor",
                 "Coloso",
                 "Bomba de espalda",
                 "Cosechadora",
                 "Pulverizadora",
                 "Sembradora"
-            );
+        );
 
-            maquinariasBase.forEach(nombre -> {
-                TipoMaquinaria maquinaria = new TipoMaquinaria();
-                maquinaria.setUuid(UUID.randomUUID().toString());
-                maquinaria.setDescripcion(nombre);
-                tipoMaquinariaRepository.save(maquinaria);
-            });
+        maquinariasBase.forEach(nombre -> {
+            TipoMaquinaria maquinaria = new TipoMaquinaria();
+            maquinaria.setUuid(UUID.randomUUID().toString());
+            maquinaria.setDescripcion(nombre);
+            tipoMaquinariaRepository.save(maquinaria);
+        });
 
-            System.out.println("✅ Tipos de maquinaria base insertados correctamente.");
-        } else {
-            System.out.println("ℹ️ Tipos de maquinaria ya existen. No se insertaron nuevos registros.");
-        }
-
-
-        };
+        log.info("✅ Tipos de maquinaria base insertados correctamente.");
     }
 
     private TipoCultivo create(String descripcion) {
@@ -193,3 +217,6 @@ public class DataInitializer {
         return tipo;
     }
 }
+
+
+ 
