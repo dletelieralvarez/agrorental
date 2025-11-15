@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -135,7 +134,7 @@ public class MaquinariasController {
         return "redirect:/maquinarias#alerts";  
     }
 
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/eliminar/{uuid}")
     public String eliminarMaquinaria(@PathVariable String uuid, RedirectAttributes ra) {
         try{
             maquinariasService.eliminarMaquinaria(uuid); 
