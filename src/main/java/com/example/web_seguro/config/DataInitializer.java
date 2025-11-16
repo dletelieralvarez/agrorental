@@ -56,6 +56,10 @@ public class DataInitializer {
     }
 
     private void inicializarUsuarios(UsuarioRepository usuarioRepository) {
+
+        String testPassword = System.getenv("ADMIN_TEST_PASS");
+        if (testPassword == null) testPassword = "devPass123";
+
         // Solo inserta datos si la tabla está vacía
         if (usuarioRepository.count() != 0) {
             log.info("ℹ️ La tabla USUARIO ya contiene datos. Saltando inicialización de usuarios.");
@@ -72,7 +76,7 @@ public class DataInitializer {
                         "Admin",
                         "Admin",
                         "admin@duocuc.cl",
-                        encoder.encode("123456"),
+                        encoder.encode(testPassword),
                         "ADMIN"),
                 new Usuario(
                         null,
@@ -81,7 +85,7 @@ public class DataInitializer {
                         "González",
                         "López",
                         "pedro@duocuc.cl",
-                        encoder.encode("123456"),
+                        encoder.encode(testPassword),
                         "USER"),
                 new Usuario(
                         null,
@@ -90,7 +94,7 @@ public class DataInitializer {
                         "Pérez",
                         "Rojas",
                         "juan@duocuc.cl",
-                        encoder.encode("123456"),
+                        encoder.encode(testPassword),
                         "USER"),
                 new Usuario(
                         null,
@@ -99,7 +103,7 @@ public class DataInitializer {
                         "Soto",
                         "Muñoz",
                         "diego@duocuc.cl",
-                        encoder.encode("123456"),
+                        encoder.encode(testPassword),
                         "USER")
         );
 
