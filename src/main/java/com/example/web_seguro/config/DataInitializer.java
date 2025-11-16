@@ -58,7 +58,11 @@ public class DataInitializer {
     private void inicializarUsuarios(UsuarioRepository usuarioRepository) {
 
         String testPassword = System.getenv("ADMIN_TEST_PASS");
-        if (testPassword == null) testPassword = "devPass123";
+        if (testPassword == null) {
+            log.warn("ADMIN_TEST_PASS no está definida. Usando contraseña temporal generada.");
+            testPassword = UUID.randomUUID().toString();  // Contraseña aleatoria temporal
+        }
+
 
         // Solo inserta datos si la tabla está vacía
         if (usuarioRepository.count() != 0) {
