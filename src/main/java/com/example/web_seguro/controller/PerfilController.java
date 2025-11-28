@@ -66,7 +66,7 @@ public class PerfilController {
         model.addAttribute("paterno", usuario.getPrimerApellido());
         model.addAttribute("materno", usuario.getSegundoApellido());
 
-        model.addAttribute("email", username);
+        //model.addAttribute("email", username);
         model.addAttribute("rol", roles);
 
         return "perfil";
