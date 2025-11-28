@@ -26,7 +26,6 @@ import com.example.web_seguro.repository.UsuarioRepository;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmpresaControllerTest {
