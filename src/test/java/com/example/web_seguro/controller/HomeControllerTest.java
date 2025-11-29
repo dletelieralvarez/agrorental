@@ -29,8 +29,9 @@ public class HomeControllerTest {
         HomeController controller = new HomeController();
         Model model = new ExtendedModelMap();
 
+        String defaultName = "Seguridad y Calidad en el Desarrollo";
         // ACT
-        String vista = controller.index(null, model);
+        String vista = controller.index(defaultName, model);
 
         // ASSERT
         assertEquals("index", vista, "La vista debe llamarse 'index'");

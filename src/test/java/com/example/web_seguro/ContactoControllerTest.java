@@ -29,8 +29,10 @@ public class ContactoControllerTest {
         ContactoController controller = new ContactoController();
         Model model = new ExtendedModelMap();
 
+        String defaultName = "Seguridad y Calidad en el Desarrollo";
+
         // ACT
-        String vista = controller.getMisEmpresas(null, model);
+        String vista = controller.getMisEmpresas(defaultName, model);
 
         // ASSERT
         assertEquals("contact", vista);
