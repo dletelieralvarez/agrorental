@@ -79,7 +79,6 @@ public class MaquinariasController {
             ra.addFlashAttribute(KEY_ERROR, "No se pudo guardar: ya existe un registro con la misma descripción o UUID."); 
         }
         catch (Exception ex) {
-            ex.printStackTrace();  
             log.error("Error al guardar maquinaria", ex);
             ra.addFlashAttribute(KEY_ERROR, "Error interno al guardar el registro."); 
         }
