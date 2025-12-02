@@ -32,6 +32,12 @@ public class MaquinariasController {
     private final TipoMaquinariaService tipoMaquinariaService; 
     private final EmpresaService empresaService; 
 
+    public static final String KEY_ERROR = "error";
+    public static final String KEY_SUCCESS = "success";
+
+    public static final String VIEW_MAQUINARIAS = "maquinarias";
+    public static final String REDIRECT_MAQUINARIAS_ALERTS = "redirect:/maquinarias#alerts";
+    
     @GetMapping 
     public String vistaMaquinarias(Model model) {
         log.info("GETMAPPING /maquinarias recibido: {}", model);
@@ -40,7 +46,7 @@ public class MaquinariasController {
         model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
         model.addAttribute("lista", maquinariasService.listaMaquinarias());
         model.addAttribute("listaEmpresas", empresaService.listaEmpresas()); 
-        return "maquinarias";
+        return VIEW_MAQUINARIAS;
     }
 
     //con esto estará disponible para utilizar dentro del controller
@@ -61,21 +67,21 @@ public class MaquinariasController {
             result.getFieldErrors().forEach(e -> 
             System.out.println("Field error: " + e.getField() + " -> " + e.getDefaultMessage()));
             model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
-            return "maquinarias"; 
+            return VIEW_MAQUINARIAS; 
         }    
         
         try{
             maquinariasService.guardarMaquinaria(maq); 
-            ra.addFlashAttribute("success", "Maquinaria guardada correctamente"); 
+            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria guardada correctamente"); 
         }
         catch(DataIntegrityViolationException exv){
             log.warn("Violación de integridad al guardar maquinaria", exv);            
-            ra.addFlashAttribute("error", "No se pudo guardar: ya existe un registro con la misma descripción o UUID."); 
+            ra.addFlashAttribute(KEY_ERROR, "No se pudo guardar: ya existe un registro con la misma descripción o UUID."); 
         }
         catch (Exception ex) {
             ex.printStackTrace();  
             log.error("Error al guardar maquinaria", ex);
-            ra.addFlashAttribute("error", "Error interno al guardar el registro."); 
+            ra.addFlashAttribute(KEY_ERROR, "Error interno al guardar el registro."); 
         }
 
         return "redirect:/maquinarias#alerts"; 
@@ -85,7 +91,7 @@ public class MaquinariasController {
     public String editarMaquinaria(@PathVariable String uuid, Model model, RedirectAttributes ra) {
         var opt = maquinariasService.buscaMaquinariaPorUuid(uuid); 
         if (opt.isEmpty()) {
-            ra.addFlashAttribute("error", "Maquinaria no existe.");
+            ra.addFlashAttribute(KEY_ERROR, "Maquinaria no existe.");
             return "redirect:/maquinarias#alerts";
         }
 
@@ -94,7 +100,7 @@ public class MaquinariasController {
         model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
         model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
         model.addAttribute("editMode", true);     
-        return "maquinarias";
+        return VIEW_MAQUINARIAS;
     }
 
     @PostMapping("/actualizar/{uuid}")
@@ -109,26 +115,26 @@ public class MaquinariasController {
             model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
             model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
             model.addAttribute("editMode", true); 
-            return "maquinarias";
+            return VIEW_MAQUINARIAS;
         }        
         
         try
         {
             maquinariasService.actualizarMaquinaria(uuid, maq); 
-            ra.addFlashAttribute("success", "Maquinaria actualizada correctamente.");
+            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria actualizada correctamente.");
         }
         catch (DataIntegrityViolationException ex)
         {
             log.warn("Violación de integridad al actualizar maquinaria", ex);
-            ra.addFlashAttribute("error", "No se pudo actualizar: descripción/UUID duplicados.");
+            ra.addFlashAttribute(KEY_ERROR, "No se pudo actualizar: descripción/UUID duplicados.");
         } catch (RuntimeException ex) 
         {
-            ra.addFlashAttribute("error", ex.getMessage()); 
+            ra.addFlashAttribute(KEY_ERROR, ex.getMessage()); 
         } 
         catch (Exception ex) 
         {
             log.error("Error al actualizar maquinaria", ex);
-            ra.addFlashAttribute("error", "Error interno al actualizar el registro.");
+            ra.addFlashAttribute(KEY_ERROR, "Error interno al actualizar el registro.");
         }
 
         return "redirect:/maquinarias#alerts";  
@@ -138,15 +144,15 @@ public class MaquinariasController {
     public String eliminarMaquinaria(@PathVariable String uuid, RedirectAttributes ra) {
         try{
             maquinariasService.eliminarMaquinaria(uuid); 
-             ra.addFlashAttribute("success", "Maquinaria eliminada correctamente.");
+             ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria eliminada correctamente.");
         } catch (DataIntegrityViolationException ex) {            
             log.warn("No se puede eliminar: FK en uso", ex);
-            ra.addFlashAttribute("error", "No se puede eliminar: existen empresas asociadas.");
+            ra.addFlashAttribute(KEY_ERROR, "No se puede eliminar: existen empresas asociadas.");
         } catch (RuntimeException ex) {
-            ra.addFlashAttribute("error", ex.getMessage());
+            ra.addFlashAttribute(KEY_ERROR, ex.getMessage());
         } catch (Exception ex) {
             log.error("Error al eliminar maquinaria", ex);
-            ra.addFlashAttribute("error", "Error interno al eliminar el registro.");
+            ra.addFlashAttribute(KEY_ERROR, "Error interno al eliminar el registro.");
         }
         return "redirect:/maquinarias#alerts";        
     }

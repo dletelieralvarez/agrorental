@@ -37,6 +37,8 @@ public class EmpresaController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    public static final String ERR_USUARIO_NO_ENCONTRADO = "Usuario no encontrado";
 
     @GetMapping("")
     public String getEmpresas(@AuthenticationPrincipal Object principal, Model model) {
@@ -44,7 +46,7 @@ public class EmpresaController {
         String email = auth.getName();
 
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException(ERR_USUARIO_NO_ENCONTRADO));
 
         Long idUsuario = usuario.getId();
 
@@ -91,7 +93,7 @@ public class EmpresaController {
         String email = auth.getName();
 
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException(ERR_USUARIO_NO_ENCONTRADO));
 
         // Buscar el tipo de cultivo por UUID
         TipoCultivo tipoCultivo = tipoCultivoRepository.findByUuid(tipoCultivoUuid)
@@ -149,7 +151,7 @@ public class EmpresaController {
         String email = auth.getName();
 
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException(ERR_USUARIO_NO_ENCONTRADO));
 
         // Buscar la empresa por UUID
         Empresa empresa = empresaRepository.findByUuid(uuid)

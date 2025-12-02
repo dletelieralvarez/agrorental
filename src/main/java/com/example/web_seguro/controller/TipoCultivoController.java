@@ -24,6 +24,7 @@ public class TipoCultivoController {
     @Autowired
     private TipoCultivoRepository tipoCultivoRepository;
 
+    private static final String MSG_TIPO_CULTIVO_NO_ENCONTRADO = "Tipo de cultivo no encontrado";
     
     @GetMapping("")
     public String getTiposCultivos(Model model) {
@@ -49,7 +50,7 @@ public class TipoCultivoController {
     @GetMapping("/editar/{uuid}")
     public String editarTipoCultivo(@PathVariable String uuid, Model model) {
         TipoCultivo cultivo = tipoCultivoRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Tipo de cultivo no encontrado"));
+                .orElseThrow(() -> new RuntimeException(MSG_TIPO_CULTIVO_NO_ENCONTRADO));
         model.addAttribute("tipoCultivo", cultivo);
         return "tipocultivo_form_editar"; // vista que mostrare 
     }
@@ -58,7 +59,7 @@ public class TipoCultivoController {
     @PostMapping("/actualizar/{uuid}")
     public String actualizar(@PathVariable String uuid, @ModelAttribute TipoCultivo actualizado) {
         TipoCultivo existente = tipoCultivoRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Tipo de cultivo no encontrado"));
+                .orElseThrow(() -> new RuntimeException(MSG_TIPO_CULTIVO_NO_ENCONTRADO));
 
         existente.setDescripcion(actualizado.getDescripcion());
         tipoCultivoRepository.save(existente);
@@ -69,7 +70,7 @@ public class TipoCultivoController {
     @PostMapping("/eliminar/{uuid}")
     public String eliminar(@PathVariable String uuid) {
         TipoCultivo cultivo = tipoCultivoRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Tipo de cultivo no encontrado"));
+                .orElseThrow(() -> new RuntimeException(MSG_TIPO_CULTIVO_NO_ENCONTRADO));
         tipoCultivoRepository.delete(cultivo);
         return "redirect:/tiposcultivos/todos?deleted";
     }
