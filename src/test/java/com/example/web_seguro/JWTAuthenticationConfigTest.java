@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.List;
 
 import javax.crypto.SecretKey;
