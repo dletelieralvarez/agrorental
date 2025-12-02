@@ -2,8 +2,6 @@ package com.example.web_seguro.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -80,13 +78,14 @@ public class Usuario implements UserDetails {
     private String password;
     
     // rol
-    @NotBlank(message = "Rol no puede estar vacío")
+    //@NotBlank(message = "Rol no puede estar vacío")
     @Size(min = 1, max = 75, message = "Rol debe tener entre 1 y 255 caracteres")
     @Column(name = "ROL", length = 50, nullable = false)
     private String rol;
 
 
     // --- Implementación de UserDetails ---
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + rol));
@@ -121,5 +120,6 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
+
+
 }

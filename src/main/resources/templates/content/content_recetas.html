@@ -1,0 +1,102 @@
+<div th:fragment="html_recetas_content">
+
+
+
+<!-- Carrusel de banners -->
+<section class="banner-section my-4">
+    <div class="container">
+        <div class="banner-carousel">
+            <div><img src="images/banners/banner1.webp" class="img-fluid rounded" alt="Banner 1"></div>
+            <div><img src="images/banners/banner1.webp" class="img-fluid rounded" alt="Banner 2"></div>
+            <div><img src="images/banners/banner1.webp" class="img-fluid rounded" alt="Banner 3"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Sección de recetas ===== -->
+<section class="recipes-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 class="section-title">🍴 Recetas Recientes y Populares</h2>
+
+        <div class="row">
+          <!-- Receta 1 -->
+          <div class="col-md-6 mb-4">
+            <div class="card recipe-card">
+              <img src="images/recetas/ensalada.webp" class="card-img-top" alt="Ensalada Fresca">
+              <div class="recipe-body">
+                <h5 class="card-title">Ensalada Fresca de Verano</h5>
+                <p class="card-text">Una mezcla deliciosa de vegetales con un toque cítrico.</p>
+                <a href="/recetas/detalle/1" class="btn btn-receta btn-block">Ver Receta</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Receta 2 -->
+          <div class="col-md-6 mb-4">
+            <div class="card recipe-card">
+              <img src="images/recetas/pasta.jpg" class="card-img-top" alt="Pasta Italiana">
+              <div class="recipe-body">
+                <h5 class="card-title">Pasta Italiana con Tomate</h5>
+                <p class="card-text">Pasta artesanal con salsa de tomate y albahaca fresca.</p>
+                <a href="/recetas/detalle/2" class="btn btn-receta btn-block">Ver Receta</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Receta 3 -->
+          <div class="col-md-6 mb-4">
+            <div class="card recipe-card">
+              <img src="images/recetas/postre.png" class="card-img-top" alt="Postre de Chocolate">
+              <div class="recipe-body">
+                <h5 class="card-title">Postre de Chocolate</h5>
+                <p class="card-text">Un dulce final perfecto con crema y cacao suave.</p>
+                <a href="/recetas/detalle/3" class="btn btn-receta btn-block">Ver Receta</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="col-lg-4 mt-5 mt-lg-0">
+        <!-- Tarjeta Empresa 1 -->
+        <div class="card company-card mb-4">
+          <div class="card-body d-flex align-items-center">
+            <img src="images/empresas/logo1.png" class="company-logo mr-3" alt="Empresa 1">
+            <div>
+              <h6 class="mb-1">EcoPack Chile</h6>
+              <small class="text-muted">Envases reutilizables y compostables</small>
+            </div>
+          </div>
+          <img src="images/empresas/eco1.webp" class="company-hero" alt="EcoPack">
+          <div class="card-body pt-2">
+            <p class="mb-2">Descuento 15% con código <strong>RECETARIO15</strong>.</p>
+            <a href="#" class="btn btn-sm btn-outline-primary btn-block">Visitar sitio</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta Empresa 2 -->
+        <div class="card company-card mb-4">
+          <div class="card-body d-flex align-items-center">
+            <img src="images/empresas/logo2.png" class="company-logo mr-3" alt="Empresa 2">
+            <div>
+              <h6 class="mb-1">La Despensa</h6>
+              <small class="text-muted">Ingredientes premium a domicilio</small>
+            </div>
+          </div>
+          <img src="images/empresas/desp.jpg" class="company-hero" alt="La Despensa">
+          <div class="card-body pt-2">
+            <p class="mb-2">Envío gratis sobre $25.000.</p>
+            <a href="#" class="btn btn-sm btn-outline-primary btn-block">Ver ofertas</a>
+          </div>
+        </div>
+
+        
+      </aside>
+    </div>
+  </div>
+</section>
+
+
+</div>

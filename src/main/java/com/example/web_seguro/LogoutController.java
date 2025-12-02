@@ -1,7 +1,6 @@
 package com.example.web_seguro;
 
  import org.springframework.stereotype.Controller;
-   import org.springframework.web.bind.annotation.GetMapping;
    import org.springframework.web.bind.annotation.PostMapping;
    import jakarta.servlet.http.Cookie;
    import jakarta.servlet.http.HttpServletResponse;
@@ -11,13 +10,13 @@ package com.example.web_seguro;
 @Controller
 public class LogoutController {
     private static final Logger logger = LoggerFactory.getLogger(LogoutController.class);
-
+/* 
     @GetMapping("/salir")
     public String logoutGet() {
         logger.info("GET /logout");
         return "redirect:/login";
     }
-
+*/
     @PostMapping("/salir")
     public String logout(HttpServletResponse response) {
         logger.info("Logout solicitado");

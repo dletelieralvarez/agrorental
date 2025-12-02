@@ -1,0 +1,108 @@
+<div th:fragment="html_tipomaquinaria_content">
+
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>Tipo de Maquinaria</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="login-signup section-padding">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-7">
+                    <div class="signup">
+
+                        <div class="text-center">
+                            <a th:href="@{/}">
+                                <img th:src="@{/images/logos/logo.png}" alt="" class="img-fluid">
+                            </a>
+                        </div>
+
+                        <h3 class="mt-4">Registrar Tipo de Maquinaria</h3>
+                        <p class="mb-5">Administrar los tipos de maquinarias disponibles</p>
+
+                        
+                        <form th:action="${editMode} ? @{/tipomaquinaria/actualizar/{uuid}(uuid=${tipo.uuid})} : @{/tipomaquinaria/guardarTipoMaquinaria}" 
+                            th:object="${tipo}"
+                            method="post" 
+                            class="signup-form row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Descripción</label>
+                                    <textarea class="form-control" 
+                                        placeholder="Descripción del tipo de maquinaria"
+                                        rows="3" 
+                                        th:field="*{descripcion}"></textarea>
+                                    <div class="text-danger" th:errors="*{descripcion}"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" type="submit">Guardar</button>
+                            </div>
+
+                            <div class="col-md-12 mt-3">
+                                <div th:if="${success}" class="alert alert-success">
+                                    <p th:text="${success}"></p>
+                                </div>
+
+                                <div th:if="${error}" class="alert alert-danger">
+                                    <p th:text="${error}"></p>
+                                </div>
+                            </div>
+
+                            <p class="mt-4 mb-0"><a href="/">Volver al inicio</a></p>
+
+                        </form>
+
+                    
+                        <hr>
+
+                        <h4 class="mt-4">Tipos registrados</h4>
+
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${lista}">
+                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${item.descripcion}"></td>
+                                    <td>
+                                        <a class="btn btn-sm btn-warning" th:href="@{/tipomaquinaria/editar/{uuid}(uuid=${item.uuid})}">
+                                            Editar
+                                        </a>
+                                        <a class="btn btn-sm btn-danger" th:href="@{/tipomaquinaria/eliminar/{uuid}(uuid=${item.uuid})}"
+                                           onclick="return confirm('¿Esta Seguro de eliminar el registro?')">
+                                            Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${lista.size()} == 0">
+                                    <td colspan="4" class="text-center">No hay registros</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

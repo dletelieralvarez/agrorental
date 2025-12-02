@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.web_seguro.model.Usuario;
 import com.example.web_seguro.repository.UsuarioRepository;
+import org.springframework.transaction.annotation.Transactional; 
+import java.util.Optional; 
 
 @Service
 public class UsuarioService {
@@ -26,4 +28,25 @@ public class UsuarioService {
     public boolean verificarPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
+
+    @Transactional
+    public Usuario registrarUsuario(Usuario usuario) {
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+        if (usuarioExistente.isPresent()) {
+            throw new IllegalArgumentException("El correo electrónico ya está registrado.");
+        }
+
+        if(usuario.getUuid() == null || usuario.getUuid().isBlank()) {
+            usuario.setUuid(java.util.UUID.randomUUID().toString());
+        }
+
+        if(usuario.getRol() == null || usuario.getRol().isBlank()) {
+            usuario.setRol("USER");
+        }
+
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
+        return usuarioRepository.save(usuario);
+    }
+
 }

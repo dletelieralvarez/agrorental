@@ -1,0 +1,226 @@
+<div th:fragment="html_maquinarias_content">
+
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>Maquinarias</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="main-container" class="main-container">
+        <div class="container">
+
+            <form th:object="${maq}"
+                  th:action="${editMode} ? @{/maquinarias/actualizar/{uuid}(uuid=${maq.uuid})}
+                                         : @{/maquinarias/guardarMaquinaria}"
+                  method="post"
+                  class="signup-form row">
+
+                <!-- <input type="hidden" th:field="*{id}"> -->
+                <input type="hidden" th:field="*{uuid}">
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea class="form-control"
+                                  placeholder="Descripción"
+                                  rows="3"
+                                  th:field="*{descripcion}"></textarea>
+                        <div class="text-danger" th:errors="*{descripcion}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Año fabricación</label>
+                        <input type="number" class="form-control"
+                               th:field="*{anioFabricacion}">
+                        <div class="text-danger" th:errors="*{anioFabricacion}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Capacidad</label>
+                        <input type="number" step="0.001" class="form-control"
+                               th:field="*{capacidad}">
+                        <div class="text-danger" th:errors="*{capacidad}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Mantención</label>
+                        <textarea class="form-control"
+                                  rows="2"
+                                  th:field="*{mantencion}"></textarea>
+                        <div class="text-danger" th:errors="*{mantencion}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Condición arriendo</label>
+                        <textarea class="form-control"
+                                  rows="2"
+                                  th:field="*{condicionArriendo}"></textarea>
+                        <div class="text-danger" th:errors="*{condicionArriendo}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Medios de pago</label>
+                        <textarea class="form-control"
+                                  rows="2"
+                                  th:field="*{mediosPago}"></textarea>
+                        <div class="text-danger" th:errors="*{mediosPago}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Fecha disponible</label>
+                        <input type="date" class="form-control"
+                               th:field="*{fechaDisponible}">
+                        <div class="text-danger" th:errors="*{fechaDisponible}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Patente</label>
+                        <input type="text" class="form-control"
+                               th:field="*{patente}">
+                        <div class="text-danger" th:errors="*{patente}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Disponible</label>
+                        <select class="form-control" th:field="*{disponible}">
+                            <option value="">Seleccione</option>
+                            <option value="SI">SI</option>
+                            <option value="NO">NO</option>
+                        </select>
+                        <div class="text-danger" th:errors="*{disponible}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <select class="form-control" th:field="*{empresa}">
+                        <option value="">Seleccione</option>
+                        <option th:each="e : ${listaEmpresas}"
+                            th:value="${e.id}"
+                            th:text="${e.razonSocial}">
+                        </option>
+                        </select>
+                            <div class="text-danger" th:errors="*{empresa}"></div>
+                    </div>
+                </div> 
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tipo maquinaria</label>
+                        <select class="form-control" th:field="*{tiposMaquinarias}">
+                            <option value="">Seleccione</option>
+                            <option th:each="t : ${listaTipos}"
+                                    th:value="${t.id}"
+                                    th:text="${t.descripcion}">
+                            </option>
+                        </select>
+                        <div class="text-danger" th:errors="*{tiposMaquinarias}"></div>
+                    </div>
+                </div>
+                    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Foto A (URL)</label>
+                        <input type="text" class="form-control"
+                            th:field="*{fotoA}">
+                        <div class="text-danger" th:errors="*{fotoA}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Foto B (URL)</label>
+                        <input type="text" class="form-control"
+                            th:field="*{fotoB}">
+                        <div class="text-danger" th:errors="*{fotoB}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Foto C (URL)</label>
+                        <input type="text" class="form-control"
+                            th:field="*{fotoC}">
+                        <div class="text-danger" th:errors="*{fotoC}"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit"
+                            th:text="${editMode} ? 'Actualizar' : 'Guardar'">
+                        Guardar
+                    </button>
+                </div>
+
+                <div class="col-md-12 mt-3" id="alerts">
+                    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                </div>
+
+                <p class="mt-4 mb-0"><a href="/">Volver al inicio</a></p>
+
+            </form>
+
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Año</th>
+                            <th>Capacidad</th>
+                            <th>Tipo</th>
+                            <th>Disponible</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="m : ${lista}">
+                            <td th:text="${m.descripcion}"></td>
+                            <td th:text="${m.anioFabricacion}"></td>
+                            <td th:text="${m.capacidad}"></td>
+                            <td th:text="${m.tiposMaquinarias.descripcion}"></td>
+                            <td th:text="${m.disponible}"></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm"
+                                   th:href="@{/maquinarias/editar/{uuid}(uuid=${m.uuid})}">Editar</a>
+                                <a class="btn btn-danger btn-sm"
+                                   th:href="@{/maquinarias/eliminar/{uuid}(uuid=${m.uuid})}"
+                                   onclick="return confirm('¿Seguro de eliminar maquinaria?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>

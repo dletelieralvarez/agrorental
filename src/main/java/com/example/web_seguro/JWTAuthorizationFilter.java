@@ -18,17 +18,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.example.web_seguro.config.Constants;
-import java.util.Map;
-
 import java.io.IOException;
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -85,29 +81,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 .getPayload();
     }
 
-    @SuppressWarnings("unchecked")
-private void ___setAuthentication__(Claims claims) {
-    Object authoritiesClaim = claims.get("authorities");
-    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-    if (authoritiesClaim instanceof List<?>) {
-        for (Object item : (List<?>) authoritiesClaim) {
-            if (item instanceof String role) {
-                authorities.add(new SimpleGrantedAuthority(role));
-            } else if (item instanceof Map<?, ?> map && map.containsKey("authority")) {
-                authorities.add(new SimpleGrantedAuthority(map.get("authority").toString()));
-            }
-        }
-    }
-
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-            claims.getSubject(),
-            null,
-            authorities
-    );
-
-    SecurityContextHolder.getContext().setAuthentication(auth);
-}
     // 3 Creo la autenticación y la guardo en el contexto de seguridad
     private void setAuthentication(Claims claims) {
         // Obtengo la lista de autoridades (roles) del token
@@ -147,7 +121,9 @@ private void ___setAuthentication__(Claims claims) {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
         try {
+                        
             // Log: muestro qué ruta está siendo accedida
             logger.info("=== Filtro JWT ===");
             logger.info("URI: {}", request.getRequestURI());
@@ -167,6 +143,7 @@ private void ___setAuthentication__(Claims claims) {
                     setAuthentication(claims);
                     logger.info("Autenticación establecida para: {}", claims.getSubject());
                     logger.info("Roles: {}", claims.get("authorities"));
+                    //logger.info("Token: {}", token);
                 } else {
                     // Si no tiene roles, limpio el contexto
                     logger.warn("Token sin authorities");

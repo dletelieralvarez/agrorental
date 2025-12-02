@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Error 401</title>
     <!--Favicon-->
-    <link rel="shortcut icon" href="@{/images/favicon.ico}" type="image/x-icon">
-    <link rel="icon" href="@{/images/favicon.ico}" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="@{/images/apple-touch-icon.png}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/apple-touch-icon.png}">
 
     <!-- THEME CSS
 	================================================== -->
@@ -31,7 +31,7 @@
                 </svg>
             </div>
 
-            <h1 class="text-danger fw-bold">¡Ups! Error 401 - No autorizado</h1>
+            <h1 class="text-danger fw-bold">¡Ups! Error 403 - No autorizado</h1>
             <p>Debes iniciar sesión para acceder a esta página.</p>
             <p class="text-secondary mb-4">Ha ocurrido un error inesperado. Por favor, intenta nuevamente o vuelve al inicio.</p>
             <a th:href="@{/}" class="btn btn-primary px-4">Volver al Inicio</a>

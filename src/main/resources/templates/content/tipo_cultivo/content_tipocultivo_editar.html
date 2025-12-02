@@ -1,0 +1,31 @@
+<div th:fragment="html_tipocultivo_editar">
+
+<div class="container mt-5">
+    <div class="card p-4">
+        <h2 class="mb-3">Editar Tipo de Cultivo</h2>
+
+        <form th:action="@{/tiposcultivos/actualizar/{uuid}(uuid=${tipoCultivo.uuid})}"
+              th:object="${tipoCultivo}" method="post">
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            <a href="/tiposcultivos/todos" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+<div class="py-40"></div>
+</div>
