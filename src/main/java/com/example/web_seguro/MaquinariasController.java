@@ -128,13 +128,9 @@ public class MaquinariasController {
             ra.addFlashAttribute(KEY_ERROR, "No se pudo actualizar: descripción/UUID duplicados.");
         } catch (RuntimeException ex) 
         {
-            ra.addFlashAttribute(KEY_ERROR, ex.getMessage()); 
-        } 
-        catch (Exception ex) 
-        {
             log.error("Error al actualizar maquinaria", ex);
-            ra.addFlashAttribute(KEY_ERROR, "Error interno al actualizar el registro.");
-        }
+            ra.addFlashAttribute(KEY_ERROR, ex.getMessage()); 
+        }         
 
         return "redirect:/maquinarias#alerts";  
     }
@@ -149,10 +145,7 @@ public class MaquinariasController {
             ra.addFlashAttribute(KEY_ERROR, "No se puede eliminar: existen empresas asociadas.");
         } catch (RuntimeException ex) {
             ra.addFlashAttribute(KEY_ERROR, ex.getMessage());
-        } catch (Exception ex) {
-            log.error("Error al eliminar maquinaria", ex);
-            ra.addFlashAttribute(KEY_ERROR, "Error interno al eliminar el registro.");
-        }
+        } 
         return "redirect:/maquinarias#alerts";        
     }
 

@@ -101,14 +101,10 @@ public class TipoMaquinariaController {
             ra.addFlashAttribute("error", "No se pudo actualizar: descripción/UUID duplicados.");
         } catch (RuntimeException ex) 
         {
+            log.error("Error interno al actualizar tipo de maquinaria", ex);
             ra.addFlashAttribute("error", ex.getMessage()); 
         } 
-        catch (Exception ex) 
-        {
-            log.error("Error al actualizar tipo de maquinaria", ex);
-            ra.addFlashAttribute("error", "Error interno al actualizar el registro.");
-        }
-
+        
         return "redirect:/tipomaquinaria";  
     }
 
@@ -121,11 +117,9 @@ public class TipoMaquinariaController {
             log.warn("No se puede eliminar: FK en uso", ex);
             ra.addFlashAttribute("error", "No se puede eliminar: existen maquinarias asociadas.");
         } catch (RuntimeException ex) {
+            log.error("Error interno al eliminar tipo de maquinaria", ex);
             ra.addFlashAttribute("error", ex.getMessage());
-        } catch (Exception ex) {
-            log.error("Error al eliminar tipo de maquinaria", ex);
-            ra.addFlashAttribute("error", "Error interno al eliminar el registro.");
-        }
+        } 
         return "redirect:/tipomaquinaria";        
     }
      
