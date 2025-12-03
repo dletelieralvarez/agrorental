@@ -135,4 +135,18 @@ public class LoginControllerTest {
         verify(model).addAttribute(eq("error"), contains("Error en autenticación"));
         verify(response, never()).addHeader(eq(HttpHeaders.SET_COOKIE), anyString());
     }
+
+    // TESTS de sanitize()
+    @Test
+    public void testSanitize_NullDevuelveVacio() {
+        String result = loginController.sanitize(null);
+        assertEquals("", result);
+    }
+
+    @Test
+    public void testSanitize_ReemplazaSaltosYTabsPorEspacio() {             
+        String original = "hola\nmundo\ty\rchau";
+        String result = loginController.sanitize(original);
+        assertEquals("hola_mundo_y_chau", result);
+    }
 }

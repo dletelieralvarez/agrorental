@@ -102,8 +102,8 @@ public class LoginController {
         }
     }
 
-    private String sanitize(String value) {
+    String sanitize(String value) {
         if (value == null) return "";
-        return value.replaceAll("[\n\r\t]", "_");
+        return value.replaceAll("[\\n\\r\\t]", "_");
     }
 }
