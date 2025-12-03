@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class MaquinariasControllerTest {
+class MaquinariasControllerTest {
 
     @Mock
     private MaquinariasService maquinariasService;
@@ -45,14 +46,25 @@ public class MaquinariasControllerTest {
     @InjectMocks
     private MaquinariasController controller;
 
+    // MÉTODO @ModelAttribute cargarTipos() 
+    @Test
+    void testCargarTipos() {
+        List<TipoMaquinaria> tipos = List.of(new TipoMaquinaria());
+        when(tipoMaquinariaService.listaTipoMaquinarias()).thenReturn(tipos);
+
+        List<TipoMaquinaria> result = controller.cargarTipos();
+
+        assertEquals(tipos, result);
+        verify(tipoMaquinariaService).listaTipoMaquinarias();
+    }
+
     // GET /maquinarias 
     @Test
-    public void testVistaMaquinarias() {
+    void testVistaMaquinarias() {
         Model model = new ExtendedModelMap();
 
         List<TipoMaquinaria> tipos = List.of(new TipoMaquinaria());
         List<Maquinarias> lista = List.of(new Maquinarias());
-        //List<Object> empresas = List.of(new Object());
         List<Empresa> empresas = List.of(new Empresa());
 
         when(tipoMaquinariaService.listaTipoMaquinarias()).thenReturn(tipos);
@@ -65,17 +77,21 @@ public class MaquinariasControllerTest {
         assertEquals(lista, model.getAttribute("lista"));
         assertEquals(tipos, model.getAttribute("listaTipos"));
         assertEquals(empresas, model.getAttribute("listaEmpresas"));
-        // "maq" debe existir
-        assertEquals(Maquinarias.class, model.getAttribute("maq").getClass());
+        Object maqAttr = model.getAttribute("maq");
+        assertEquals(Maquinarias.class, maqAttr.getClass());
     }
 
-    // POST /guardarMaquinaria: errores de validación 
+    // POST /guardarMaquinaria 
+    // errores de validación (cubre el lambda getFieldErrors().forEach...)
     @Test
-    public void testGuardarMaquinaria_ErroresValidacion() {
+    void testGuardarMaquinaria_ErroresValidacion() {
         Maquinarias maq = new Maquinarias();
         Model model = new ExtendedModelMap();
 
         when(bindingResult.hasErrors()).thenReturn(true);
+        when(bindingResult.getFieldErrors())
+                .thenReturn(List.of(new FieldError("maq", "campo", "mensaje")));
+
         List<Maquinarias> lista = List.of(new Maquinarias());
         when(maquinariasService.listaMaquinarias()).thenReturn(lista);
 
@@ -87,9 +103,9 @@ public class MaquinariasControllerTest {
         verify(redirectAttributes, never()).addFlashAttribute(eq("success"), any());
     }
 
-    // POST /guardarMaquinaria: OK
+    // ok
     @Test
-    public void testGuardarMaquinaria_OK() {
+    void testGuardarMaquinaria_OK() {
         Maquinarias maq = new Maquinarias();
         Model model = new ExtendedModelMap();
 
@@ -98,13 +114,13 @@ public class MaquinariasControllerTest {
         String view = controller.guardarMaquinaria(maq, bindingResult, model, redirectAttributes);
 
         assertEquals("redirect:/maquinarias#alerts", view);
-        verify(maquinariasService, times(1)).guardarMaquinaria(maq);
-        verify(redirectAttributes).addFlashAttribute(eq("success"), anyString());
+        verify(maquinariasService).guardarMaquinaria(maq);
+        verify(redirectAttributes).addFlashAttribute(eq("success"), contains("guardada"));
     }
 
-    // POST /guardarMaquinaria: DataIntegrityViolation 
+    // DataIntegrityViolationException
     @Test
-    public void testGuardarMaquinaria_IntegridadViolada() {
+    void testGuardarMaquinaria_IntegridadViolada() {
         Maquinarias maq = new Maquinarias();
         Model model = new ExtendedModelMap();
 
@@ -115,12 +131,31 @@ public class MaquinariasControllerTest {
         String view = controller.guardarMaquinaria(maq, bindingResult, model, redirectAttributes);
 
         assertEquals("redirect:/maquinarias#alerts", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), contains("No se pudo guardar"));
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), contains("No se pudo guardar"));
     }
 
-    // GET /editar/{uuid}: maquinaria existe 
+    // Exception genérica (cubre catch (Exception ex) de guardar)
     @Test
-    public void testEditarMaquinaria_OK() {
+    void testGuardarMaquinaria_ErrorGenerico() {
+        Maquinarias maq = new Maquinarias();
+        Model model = new ExtendedModelMap();
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new RuntimeException("fallo"))
+                .when(maquinariasService).guardarMaquinaria(maq);
+
+        String view = controller.guardarMaquinaria(maq, bindingResult, model, redirectAttributes);
+
+        assertEquals("redirect:/maquinarias#alerts", view);
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), contains("Error interno al guardar"));
+    }
+
+    // GET /editar/{uuid} 
+
+    @Test
+    void testEditarMaquinaria_OK() {
         String uuid = "uuid-123";
         Maquinarias maq = new Maquinarias();
         Model model = new ExtendedModelMap();
@@ -138,9 +173,8 @@ public class MaquinariasControllerTest {
         assertEquals(true, model.getAttribute("editMode"));
     }
 
-    // GET /editar/{uuid}: maquinaria NO existe 
     @Test
-    public void testEditarMaquinaria_NoExiste() {
+    void testEditarMaquinaria_NoExiste() {
         String uuid = "uuid-404";
         Model model = new ExtendedModelMap();
 
@@ -149,12 +183,14 @@ public class MaquinariasControllerTest {
         String view = controller.editarMaquinaria(uuid, model, redirectAttributes);
 
         assertEquals("redirect:/maquinarias#alerts", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), contains("Maquinaria no existe"));
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), contains("no existe"));
     }
 
-    // POST /actualizar/{uuid}: errores de validación 
+    // POST /actualizar/{uuid} 
+    // errores de validación (ya cubre llamar a cargarTipos() y setear editMode)
     @Test
-    public void testActualizarMaquinaria_ErroresValidacion() {
+    void testActualizarMaquinaria_ErroresValidacion() {
         String uuid = "uuid-123";
         Maquinarias maq = new Maquinarias();
         Model model = new ExtendedModelMap();
@@ -172,9 +208,9 @@ public class MaquinariasControllerTest {
         verify(maquinariasService, never()).actualizarMaquinaria(anyString(), any());
     }
 
-    // POST /actualizar/{uuid}: OK 
+    // ok
     @Test
-    public void testActualizarMaquinaria_OK() {
+    void testActualizarMaquinaria_OK() {
         String uuid = "uuid-123";
         Maquinarias maq = new Maquinarias();
         Model model = new ExtendedModelMap();
@@ -185,24 +221,62 @@ public class MaquinariasControllerTest {
 
         assertEquals("redirect:/maquinarias#alerts", view);
         verify(maquinariasService).actualizarMaquinaria(uuid, maq);
-        verify(redirectAttributes).addFlashAttribute(eq("success"), contains("actualizada"));
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("success"), contains("actualizada"));
     }
 
-    // GET /eliminar/{uuid}: OK 
+    // DataIntegrityViolationException
     @Test
-    public void testEliminarMaquinaria_OK() {
+    void testActualizarMaquinaria_IntegridadViolada() {
+        String uuid = "uuid-123";
+        Maquinarias maq = new Maquinarias();
+        Model model = new ExtendedModelMap();
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new DataIntegrityViolationException("dup"))
+                .when(maquinariasService).actualizarMaquinaria(uuid, maq);
+
+        String view = controller.actualizarMaquinaria(uuid, maq, bindingResult, model, redirectAttributes);
+
+        assertEquals("redirect:/maquinarias#alerts", view);
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), contains("No se pudo actualizar"));
+    }
+
+    // RuntimeException (cubre catch (RuntimeException ex))
+    @Test
+    void testActualizarMaquinaria_RuntimeException() {
+        String uuid = "uuid-123";
+        Maquinarias maq = new Maquinarias();
+        Model model = new ExtendedModelMap();
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new RuntimeException("mensaje runtime"))
+                .when(maquinariasService).actualizarMaquinaria(uuid, maq);
+
+        String view = controller.actualizarMaquinaria(uuid, maq, bindingResult, model, redirectAttributes);
+
+        assertEquals("redirect:/maquinarias#alerts", view);
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), eq("mensaje runtime"));
+    }
+
+    
+    // GET /eliminar/{uuid} 
+    @Test
+    void testEliminarMaquinaria_OK() {
         String uuid = "uuid-123";
 
         String view = controller.eliminarMaquinaria(uuid, redirectAttributes);
 
         assertEquals("redirect:/maquinarias#alerts", view);
         verify(maquinariasService).eliminarMaquinaria(uuid);
-        verify(redirectAttributes).addFlashAttribute(eq("success"), contains("eliminada"));
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("success"), contains("eliminada"));
     }
 
-    // GET /eliminar/{uuid}: DataIntegrityViolation 
     @Test
-    public void testEliminarMaquinaria_IntegridadViolada() {
+    void testEliminarMaquinaria_IntegridadViolada() {
         String uuid = "uuid-123";
 
         doThrow(new DataIntegrityViolationException("FK"))
@@ -211,6 +285,23 @@ public class MaquinariasControllerTest {
         String view = controller.eliminarMaquinaria(uuid, redirectAttributes);
 
         assertEquals("redirect:/maquinarias#alerts", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), contains("No se puede eliminar"));
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), contains("No se puede eliminar"));
     }
+
+    // RuntimeException (cubre catch (RuntimeException ex))
+    @Test
+    void testEliminarMaquinaria_RuntimeException() {
+        String uuid = "uuid-123";
+
+        doThrow(new RuntimeException("mensaje runtime"))
+                .when(maquinariasService).eliminarMaquinaria(uuid);
+
+        String view = controller.eliminarMaquinaria(uuid, redirectAttributes);
+
+        assertEquals("redirect:/maquinarias#alerts", view);
+        verify(redirectAttributes)
+                .addFlashAttribute(eq("error"), eq("mensaje runtime"));
+    }
+
 }
