@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -41,10 +42,7 @@ public class WebSecurityConfig {
                                 )
                                 .exceptionHandling(ex -> ex
                                         //  .accessDeniedPage("/error") // rutas no autorizadas van aquí
-                                        .accessDeniedHandler((request, response, exception) -> {
-                                                        request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
-                                                        request.getRequestDispatcher("/error").forward(request, response);
-                                                     })
+                                        .accessDeniedHandler(customAccessDeniedHandler())
                                 )
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .csrf(csrf -> csrf.disable())
@@ -71,6 +69,13 @@ public class WebSecurityConfig {
                                 );
 
                 return http.build();
+        }
+
+        AccessDeniedHandler customAccessDeniedHandler() {
+                return (request, response, exception) -> {
+                        request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+                        request.getRequestDispatcher("/error").forward(request, response);
+                };
         }
 
         @Bean
