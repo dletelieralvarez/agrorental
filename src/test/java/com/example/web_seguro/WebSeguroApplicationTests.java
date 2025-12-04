@@ -10,4 +10,8 @@ class WebSeguroApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+    void mainDebeEjecutarseSinErrores() {        
+        WebSeguroApplication.main(new String[] {});
+    }
 }
