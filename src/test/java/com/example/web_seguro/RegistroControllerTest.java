@@ -10,10 +10,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class RegistroControllerTest {
@@ -47,12 +50,16 @@ public class RegistroControllerTest {
         Model model = new ExtendedModelMap();
 
         when(bindingResult.hasErrors()).thenReturn(true);
+       
+        when(bindingResult.getFieldErrors())
+                .thenReturn(List.of(new FieldError("usuario", "email", "Email invalido")));
 
         String view = registroController.registrarUsuario(usuario, bindingResult, model);
 
         assertEquals("signup", view);
         verify(usuarioService, never()).registrarUsuario(any());
     }
+    
 
     // POST /signup: registro OK 
     @Test
