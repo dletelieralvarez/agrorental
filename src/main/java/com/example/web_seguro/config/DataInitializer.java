@@ -142,7 +142,7 @@ public class DataInitializer {
         log.info("✅ Tipos de cultivos iniciales insertados correctamente.");
     }
 
-    private void inicializarEmpresas(EmpresaRepository empresaRepository,
+    void inicializarEmpresas(EmpresaRepository empresaRepository,
                                      UsuarioRepository usuarioRepository,
                                      TipoCultivoRepository tipoCultivoRepository) {
 
