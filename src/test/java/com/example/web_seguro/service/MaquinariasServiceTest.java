@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.Sort;
 
 
 import com.example.web_seguro.model.Maquinarias;
