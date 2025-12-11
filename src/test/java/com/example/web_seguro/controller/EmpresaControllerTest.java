@@ -1,5 +1,9 @@
 package com.example.web_seguro.controller;
+
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +27,9 @@ import com.example.web_seguro.repository.EmpresaRepository;
 import com.example.web_seguro.repository.TipoCultivoRepository;
 import com.example.web_seguro.repository.UsuarioRepository;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 public class EmpresaControllerTest {
-    
+
     @Mock
     private EmpresaRepository empresaRepository;
 
@@ -39,31 +39,37 @@ public class EmpresaControllerTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
-    //controlador que vamos a probar con los mocks inyectados
+    // controlador que vamos a probar con los mocks inyectados
     @InjectMocks
-    private EmpresaController empresaController; 
+    private EmpresaController empresaController;
 
-    //TEST 1 --> GET EMPRESAS 
+    // GET EMPRESAS (usuario existe + empresas con y sin tipoCultivo)
     @Test
     public void testGetEmpresas() {
 
-        //simula un usuario autenticado
+        // simula un usuario autenticado
         Authentication auth = new UsernamePasswordAuthenticationToken("user@test.com", null);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(auth);
         SecurityContextHolder.setContext(context);
-        
-        //mock de usuario encontrado segun el mail 
+
+        // mock de usuario encontrado segun el mail
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setEmail("user@test.com");
-        
+
         when(usuarioRepository.findByEmail("user@test.com"))
                 .thenReturn(Optional.of(usuario));
 
-        //mock de las empresas del usuario 
+        // empresa 1 CON tipoCultivo
         Empresa e1 = new Empresa();
+        TipoCultivo tipo = new TipoCultivo();
+        tipo.setDescripcion("Trigo");
+        e1.setTipoCultivo(tipo);
+
+        // empresa 2 SIN tipoCultivo (null)
         Empresa e2 = new Empresa();
+
         List<Empresa> listaEmpresas = List.of(e1, e2);
 
         when(empresaRepository.findByUsuarioIdOrderByRazonSocialAsc(1L))
@@ -71,23 +77,43 @@ public class EmpresaControllerTest {
 
         Model model = new ExtendedModelMap();
 
-        //ACT
+        // ACT
         String vista = empresaController.getEmpresas(null, model);
 
-        //ASSERT
+        // ASSERT
         assertEquals("mis_empresas", vista,
                 "La vista devuelta debe ser 'mis_empresas'");
         assertEquals(listaEmpresas, model.getAttribute("empresas"),
                 "El modelo debe contener la lista de empresas");
         assertEquals(1L, model.getAttribute("id"),
                 "El modelo debe contener el id del usuario");
-
     }
 
-    //TEST 2 GUARDAR EMPRESA    
+    // GET EMPRESAS cuando NO se encuentra el usuario
+    @Test
+    public void testGetEmpresas_UsuarioNoEncontrado_LanzaExcepcion() {
+
+        // simula un usuario autenticado
+        Authentication auth = new UsernamePasswordAuthenticationToken("user@test.com", null);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+
+        // mock: no se encuentra el usuario
+        when(usuarioRepository.findByEmail("user@test.com"))
+                .thenReturn(Optional.empty());
+
+        Model model = new ExtendedModelMap();
+
+        // ACT + ASSERT: debe lanzar RuntimeException
+        assertThrows(RuntimeException.class,
+                () -> empresaController.getEmpresas(null, model),
+                "Debe lanzar RuntimeException cuando el usuario no existe");
+    }
+
+    // TEST 2 GUARDAR EMPRESA
     @Test
     public void testGuardarEmpresa() {
-        // Arrange
         // Usuario autenticado
         Authentication auth = new UsernamePasswordAuthenticationToken("user@test.com", null);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -120,7 +146,7 @@ public class EmpresaControllerTest {
 
         // Verifica que se llamó a save con una empresa
         verify(empresaRepository, times(1)).save(empresa);
-        // Y que se asignó usuario y tipo (opcional si tus getters existen)
+        // Y que se asignó usuario y tipo
         assertEquals(usuario, empresa.getUsuario());
         assertEquals(tipo, empresa.getTipoCultivo());
     }
@@ -155,7 +181,7 @@ public class EmpresaControllerTest {
         empresa.setUuid(uuid);
 
         when(empresaRepository.findByUuid(uuid))
-                .thenReturn(java.util.Optional.of(empresa));
+                .thenReturn(Optional.of(empresa));
 
         List<TipoCultivo> tipos = List.of(new TipoCultivo());
         when(tipoCultivoRepository.findAll()).thenReturn(tipos);
@@ -182,12 +208,12 @@ public class EmpresaControllerTest {
         existente.setDireccion("Vieja dir");
 
         when(empresaRepository.findByUuid(uuid))
-                .thenReturn(java.util.Optional.of(existente));
+                .thenReturn(Optional.of(existente));
 
         TipoCultivo tipoNuevo = new TipoCultivo();
         tipoNuevo.setUuid("tc-uuid");
         when(tipoCultivoRepository.findByUuid("tc-uuid"))
-                .thenReturn(java.util.Optional.of(tipoNuevo));
+                .thenReturn(Optional.of(tipoNuevo));
 
         // datos nuevos
         Empresa actualizada = new Empresa();
@@ -226,14 +252,14 @@ public class EmpresaControllerTest {
         usuario.setEmail("user@test.com");
 
         when(usuarioRepository.findByEmail("user@test.com"))
-                .thenReturn(java.util.Optional.of(usuario));
+                .thenReturn(Optional.of(usuario));
 
         Empresa empresa = new Empresa();
         empresa.setUuid("emp-123");
         empresa.setUsuario(usuario); // pertenece al mismo usuario
 
         when(empresaRepository.findByUuid("emp-123"))
-                .thenReturn(java.util.Optional.of(empresa));
+                .thenReturn(Optional.of(empresa));
 
         // ACT
         String vista = empresaController.eliminar("emp-123");
@@ -257,7 +283,7 @@ public class EmpresaControllerTest {
         usuario.setEmail("user@test.com");
 
         when(usuarioRepository.findByEmail("user@test.com"))
-                .thenReturn(java.util.Optional.of(usuario));
+                .thenReturn(Optional.of(usuario));
 
         // empresa pertenece a OTRO usuario
         Usuario otro = new Usuario();
@@ -268,7 +294,7 @@ public class EmpresaControllerTest {
         empresa.setUsuario(otro);
 
         when(empresaRepository.findByUuid("emp-123"))
-                .thenReturn(java.util.Optional.of(empresa));
+                .thenReturn(Optional.of(empresa));
 
         // ACT + ASSERT
         assertThrows(RuntimeException.class,
