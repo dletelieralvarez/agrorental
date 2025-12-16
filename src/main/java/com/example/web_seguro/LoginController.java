@@ -57,16 +57,8 @@ public class LoginController {
         try {
 
             String sanitizedUsername = username.replaceAll("[\\n\\r\\t]", "_");
-
-            logger.info("Intento de login para usuario: {}", username);
-
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            logger.info("Usuario encontrado: {}", userDetails.getUsername());
-            logger.info("Password encriptada en BD: {}", userDetails.getPassword());
-            logger.info("Password enviada (plain): {}", sanitize(encryptedPass));
-
             boolean passwordValida = passwordEncoder.matches(encryptedPass, userDetails.getPassword());
-            logger.info("¿Password válida?: {}", passwordValida);
 
             if (!passwordValida) {
                 logger.warn("Contraseña incorrecta para usuario: {}", sanitizedUsername);
@@ -74,10 +66,7 @@ public class LoginController {
                 return "account";
             }
 
-            logger.info("Login exitoso para: {}", username);
             String token = jwtAuthenticationConfig.getJWTToken(userDetails);
-            logger.info("Token generado: {}", token.substring(0, 20) + "...");
-
             String tokenSinBearer = token.replace("Bearer ", "");
             boolean isProd = "prod".equals(System.getenv("ENV"));
             ResponseCookie cookie = ResponseCookie.from("jwt_token", tokenSinBearer)
@@ -95,7 +84,6 @@ public class LoginController {
             return "redirect:/";
 
         } catch (Exception e) {
-            logger.error("Error en login: ", e);
             model.addAttribute("error", "Error en autenticación: " + e.getMessage());
             //return "account";
             return VIEW_ACCOUNT; 
