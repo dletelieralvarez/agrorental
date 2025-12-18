@@ -29,19 +29,7 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
-	<!-- Mover dependencyManagement fuera del bloque dependencies 
-	<dependencyManagement>
-		<dependencies>
-			
-			<dependency>
-				<groupId>com.oracle.database.jdbc</groupId>
-				<artifactId>ojdbc-bom</artifactId>
-				<version>19.7.0.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>-->
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -98,15 +86,6 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-<!--
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc11</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		-->
-
 
 		<!-- data-jpa -->
 		<dependency>
@@ -118,32 +97,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-		
-		<!-- Oracle JDBC driver 
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc8</artifactId>
-		</dependency>-->
-		
-		<!-- Oracle Wallet support dependencies 
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ucp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>oraclepki</artifactId>
-		</dependency>-->
-		<!--
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>osdt_core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>osdt_cert</artifactId>
-		</dependency>
--->
+			
 		 <!-- Development -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -168,12 +122,6 @@
 			<version>0.12.5</version>
 			<scope>runtime</scope>
 		</dependency>
- <!-- Development 
-		<dependency>
-  <groupId>me.paulschwarz</groupId>
-  <artifactId>spring-dotenv</artifactId>
-  <version>3.0.0</version>
-</dependency>-->
 
  </dependencies>
 
