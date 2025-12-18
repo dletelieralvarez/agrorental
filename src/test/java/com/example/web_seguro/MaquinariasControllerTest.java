@@ -89,9 +89,7 @@ class MaquinariasControllerTest {
         Model model = new ExtendedModelMap();
 
         when(bindingResult.hasErrors()).thenReturn(true);
-        when(bindingResult.getFieldErrors())
-                .thenReturn(List.of(new FieldError("maq", "campo", "mensaje")));
-
+        
         List<Maquinarias> lista = List.of(new Maquinarias());
         when(maquinariasService.listaMaquinarias()).thenReturn(lista);
 
