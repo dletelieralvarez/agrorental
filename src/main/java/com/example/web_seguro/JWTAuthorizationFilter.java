@@ -38,7 +38,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     // Evita duplicar el literal "authorities" (Sonar java:S1192)
     private static final String CLAIM_AUTHORITIES = "authorities";
 
-    // 1) Extraigo el token del header Authorization o de la cookie
+    // 1 extrae el token del header Authorization o de la cookie
     private String getTokenFromRequest(HttpServletRequest request) {
 
         String authHeader = request.getHeader(HEADER_AUTHORIZACION_KEY);
@@ -59,7 +59,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    // 2) Valido la firma del token y extraigo los claims
+    // 2 Valida la firma del token y extraigo los claims
     private Claims getClaimsFromToken(String token) {
         return Jwts.parser()
                 .verifyWith((SecretKey) getSigningKey(SUPER_SECRET_KEY))
@@ -68,7 +68,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 .getPayload();
     }
 
-    // 3) Creo la autenticación y la guardo en el contexto de seguridad
+    // 3 se crea la autenticación y se guarda en el contexto de seguridad
     @SuppressWarnings("unchecked")
     private void setAuthentication(Claims claims) {
 
@@ -81,23 +81,23 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                         null,
                         authorities.stream()
                                 .map(SimpleGrantedAuthority::new)
-                                .toList() // java:S6204 → Stream.toList()
+                                .toList()
                 );
 
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-    // 4) Verifico si existe un token en el request
+    // 4 Verifica si existe un token en el request
     private boolean isJWTValid(HttpServletRequest request) {
         return getTokenFromRequest(request) != null;
     }
 
-    // 5) Obtengo la clave secreta para firmar/verificar tokens
+    // 5 obtiene la clave secreta para firmar/verificar tokens
     private Key getSigningKey(String secret) {
         return Constants.getSigningKey(secret);
     }
 
-    // 6) Filtro principal (se ejecuta en cada request)
+    // 6 Filtra principal (se ejecuta en cada request)
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,

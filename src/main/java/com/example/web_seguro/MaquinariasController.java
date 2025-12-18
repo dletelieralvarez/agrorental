@@ -1,4 +1,5 @@
 package com.example.web_seguro;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,125 +29,130 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/maquinarias")
 @RequiredArgsConstructor
 public class MaquinariasController {
-    private final MaquinariasService maquinariasService; 
-    private final TipoMaquinariaService tipoMaquinariaService; 
-    private final EmpresaService empresaService; 
+
+    private final MaquinariasService maquinariasService;
+    private final TipoMaquinariaService tipoMaquinariaService;
+    private final EmpresaService empresaService;
 
     public static final String KEY_ERROR = "error";
     public static final String KEY_SUCCESS = "success";
 
     public static final String VIEW_MAQUINARIAS = "maquinarias";
     public static final String REDIRECT_MAQUINARIAS_ALERTS = "redirect:/maquinarias#alerts";
-    
-    @GetMapping 
+
+    // Constantes de atributos del modelo (Sonar java:S1192)
+    private static final String ATTR_LISTA_TIPOS = "listaTipos";
+
+    @GetMapping
     public String vistaMaquinarias(Model model) {
-        log.info("GETMAPPING /maquinarias recibido: {}", model);
-        System.out.println("Field error: " + model);
-        model.addAttribute("maq", new Maquinarias()); 
-        model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
+        log.info("GET /maquinarias");
+
+        model.addAttribute("maq", new Maquinarias());
+        model.addAttribute(ATTR_LISTA_TIPOS, tipoMaquinariaService.listaTipoMaquinarias());
         model.addAttribute("lista", maquinariasService.listaMaquinarias());
-        model.addAttribute("listaEmpresas", empresaService.listaEmpresas()); 
+        model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
+
         return VIEW_MAQUINARIAS;
     }
 
-    //con esto estará disponible para utilizar dentro del controller
-    @ModelAttribute("listaTipos")
+    // Disponible para todo el controller
+    @ModelAttribute(ATTR_LISTA_TIPOS)
     public List<TipoMaquinaria> cargarTipos() {
         return tipoMaquinariaService.listaTipoMaquinarias();
     }
 
     @PostMapping("/guardarMaquinaria")
-    public String guardarMaquinaria(@Valid @ModelAttribute("maq") Maquinarias maq, 
-                                        BindingResult result, 
-                                        Model model, 
-                                        RedirectAttributes ra)
-    {
+    public String guardarMaquinaria(
+            @Valid @ModelAttribute("maq") Maquinarias maq,
+            BindingResult result,
+            Model model,
+            RedirectAttributes ra) {
+
         log.info("POST /maquinarias/guardarMaquinaria payload: {}", maq);
 
-        if(result.hasErrors()){
-            result.getFieldErrors().forEach(e -> 
-            System.out.println("Field error: " + e.getField() + " -> " + e.getDefaultMessage()));
-            model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
-            return VIEW_MAQUINARIAS; 
-        }    
-        
-        try{
-            maquinariasService.guardarMaquinaria(maq); 
-            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria guardada correctamente"); 
-        }
-        catch(DataIntegrityViolationException exv){
-            log.warn("Violación de integridad al guardar maquinaria", exv);            
-            ra.addFlashAttribute(KEY_ERROR, "No se pudo guardar: ya existe un registro con la misma descripción o UUID."); 
-        }
-        catch (Exception ex) {
-            log.error("Error al guardar maquinaria", ex);
-            ra.addFlashAttribute(KEY_ERROR, "Error interno al guardar el registro."); 
+        if (result.hasErrors()) {
+            model.addAttribute("lista", maquinariasService.listaMaquinarias());
+            return VIEW_MAQUINARIAS;
         }
 
-        return "redirect:/maquinarias#alerts"; 
+        try {
+            maquinariasService.guardarMaquinaria(maq);
+            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria guardada correctamente");
+        } catch (DataIntegrityViolationException ex) {
+            log.warn("Violación de integridad al guardar maquinaria", ex);
+            ra.addFlashAttribute(KEY_ERROR,
+                    "No se pudo guardar: ya existe un registro con la misma descripción o UUID.");
+        } catch (Exception ex) {
+            log.error("Error al guardar maquinaria", ex);
+            ra.addFlashAttribute(KEY_ERROR, "Error interno al guardar el registro.");
+        }
+
+        return REDIRECT_MAQUINARIAS_ALERTS;
     }
 
     @GetMapping("/editar/{uuid}")
     public String editarMaquinaria(@PathVariable String uuid, Model model, RedirectAttributes ra) {
-        var opt = maquinariasService.buscaMaquinariaPorUuid(uuid); 
+
+        var opt = maquinariasService.buscaMaquinariaPorUuid(uuid);
         if (opt.isEmpty()) {
             ra.addFlashAttribute(KEY_ERROR, "Maquinaria no existe.");
-            return "redirect:/maquinarias#alerts";
+            return REDIRECT_MAQUINARIAS_ALERTS;
         }
 
-        model.addAttribute("maq", opt.get());     
-        model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
-        model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
+        model.addAttribute("maq", opt.get());
+        model.addAttribute("lista", maquinariasService.listaMaquinarias());
+        model.addAttribute(ATTR_LISTA_TIPOS, tipoMaquinariaService.listaTipoMaquinarias());
         model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
-        model.addAttribute("editMode", true);     
+        model.addAttribute("editMode", true);
+
         return VIEW_MAQUINARIAS;
     }
 
     @PostMapping("/actualizar/{uuid}")
-    public String actualizarMaquinaria(@PathVariable String uuid,
-                             @Valid @ModelAttribute("maq") Maquinarias maq,
-                             BindingResult result,
-                             Model model,
-                             RedirectAttributes ra) {
-     
-        if(result.hasErrors()){
-            model.addAttribute("lista", maquinariasService.listaMaquinarias()); 
-            model.addAttribute("listaTipos", tipoMaquinariaService.listaTipoMaquinarias());
-            model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
-            model.addAttribute("editMode", true); 
-            return VIEW_MAQUINARIAS;
-        }        
-        
-        try
-        {
-            maquinariasService.actualizarMaquinaria(uuid, maq); 
-            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria actualizada correctamente.");
-        }
-        catch (DataIntegrityViolationException ex)
-        {
-            log.warn("Violación de integridad al actualizar maquinaria", ex);
-            ra.addFlashAttribute(KEY_ERROR, "No se pudo actualizar: descripción/UUID duplicados.");
-        } catch (RuntimeException ex) 
-        {
-            log.error("Error al actualizar maquinaria", ex);
-            ra.addFlashAttribute(KEY_ERROR, ex.getMessage()); 
-        }         
+    public String actualizarMaquinaria(
+            @PathVariable String uuid,
+            @Valid @ModelAttribute("maq") Maquinarias maq,
+            BindingResult result,
+            Model model,
+            RedirectAttributes ra) {
 
-        return "redirect:/maquinarias#alerts";  
+        if (result.hasErrors()) {
+            model.addAttribute("lista", maquinariasService.listaMaquinarias());
+            model.addAttribute(ATTR_LISTA_TIPOS, tipoMaquinariaService.listaTipoMaquinarias());
+            model.addAttribute("listaEmpresas", empresaService.listaEmpresas());
+            model.addAttribute("editMode", true);
+            return VIEW_MAQUINARIAS;
+        }
+
+        try {
+            maquinariasService.actualizarMaquinaria(uuid, maq);
+            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria actualizada correctamente.");
+        } catch (DataIntegrityViolationException ex) {
+            log.warn("Violación de integridad al actualizar maquinaria", ex);
+            ra.addFlashAttribute(KEY_ERROR,
+                    "No se pudo actualizar: descripción/UUID duplicados.");
+        } catch (RuntimeException ex) {
+            log.error("Error al actualizar maquinaria", ex);
+            ra.addFlashAttribute(KEY_ERROR, ex.getMessage());
+        }
+
+        return REDIRECT_MAQUINARIAS_ALERTS;
     }
 
     @GetMapping("/eliminar/{uuid}")
     public String eliminarMaquinaria(@PathVariable String uuid, RedirectAttributes ra) {
-        try{
-            maquinariasService.eliminarMaquinaria(uuid); 
-             ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria eliminada correctamente.");
-        } catch (DataIntegrityViolationException ex) {            
+
+        try {
+            maquinariasService.eliminarMaquinaria(uuid);
+            ra.addFlashAttribute(KEY_SUCCESS, "Maquinaria eliminada correctamente.");
+        } catch (DataIntegrityViolationException ex) {
             log.warn("No se puede eliminar: FK en uso", ex);
-            ra.addFlashAttribute(KEY_ERROR, "No se puede eliminar: existen empresas asociadas.");
+            ra.addFlashAttribute(KEY_ERROR,
+                    "No se puede eliminar: existen empresas asociadas.");
         } catch (RuntimeException ex) {
             ra.addFlashAttribute(KEY_ERROR, ex.getMessage());
-        } 
-        return "redirect:/maquinarias#alerts";        
-    }
+        }
 
+        return REDIRECT_MAQUINARIAS_ALERTS;
+    }
 }
